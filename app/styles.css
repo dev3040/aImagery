@@ -238,7 +238,7 @@ h3 em {
   background-color: white;
   background-position: center center !important;
   background-repeat: no-repeat !important;
-  background-size: cover !important;
+  background-size: contain !important;
   color: rgba(255, 255, 255, 0.3);
   font-size: 2em;
   font-family: "Playfair Display", serif;
