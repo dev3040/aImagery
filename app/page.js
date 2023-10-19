@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import './styles.css'
-import { getCaption, logout, validateUser } from './services/caption.service';
+import { getCaption, getEmotionCaption, logout, validateUser } from './services/caption.service';
 import _ from "lodash"
 import { useRouter } from 'next/navigation'
 import { LuRefreshCcw, LuLayoutDashboard, LuLayers, LuLogOut } from 'react-icons/lu';
@@ -12,7 +12,7 @@ export default function Home() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [captions, setCaptions] = useState({});
-  const [user, setUser] = useState({});
+  const [emotionCaption, setEmotionCaption] = useState("");
   const router = useRouter()
   useEffect(() => {
     // validateUser().then(user => {
@@ -40,9 +40,9 @@ export default function Home() {
       setSelectedImage(event.target.files[0]);
       const formData = new FormData();
       formData.append("file", event.target.files[0]);
-      console.log(formData);
       setLoading(true)
       getCaption(formData).then((response) => {
+        setEmotionCaption(response.data["image-description"])
         setCaptions(response.data.captions)
         setLoading(false)
       })
@@ -52,6 +52,23 @@ export default function Home() {
         });
     }
   };
+
+  const handleOptionChange = (changeEvent) => {
+    const payload = {
+      image_description: emotionCaption,
+      emotion: changeEvent.target.value
+    }
+    console.log('payload: ', payload);
+    setLoading(true)
+    getEmotionCaption(payload).then((response) => {
+      setCaptions(response.data.emotion_caption)
+      setLoading(false)
+    })
+      .catch((error) => {
+        console.log(error);
+        setLoading(false);
+      });
+  }
 
 
   return (
@@ -92,7 +109,7 @@ export default function Home() {
           <div className="header-section">
             <div className="row">
               <div className="col-8">
-                <img style={{ maxWidth: "10%", marginTop:"10px"}} src='https://i.ibb.co/6DWKXZL/logo-light.png' />
+                <img style={{ maxWidth: "10%", marginTop: "10px" }} src='https://i.ibb.co/6DWKXZL/logo-light.png' />
               </div>
               <div className="col-4">
                 <button
@@ -182,10 +199,36 @@ export default function Home() {
                   </div>
                 </div>
               </div>
+              <div className='emotions'>
+                <div className='loadbox' style={{ padding: "10px 10px 10px 10px" }}>
+                  <form>
+                    <div class="buttonx">
+                      <input type="radio" value="Serious" disabled={loading || !emotionCaption} id="a25" name="check-substitution-2" onChange={handleOptionChange} />
+                      <label className={`btn btn-default`} for="a25">&#128528; Serious</label>
+                    </div>
+
+                    <div class="buttonx">
+                      <input type="radio" value="Cool" disabled={loading || !emotionCaption} id="a50" name="check-substitution-2" onChange={handleOptionChange} />
+                      <label className={`btn btn-default`} for="a50">&#x1F60E; Cool</label>
+                    </div>
+
+                    <div class="buttonx">
+                      <input type="radio" value="Funny" disabled={loading || !emotionCaption} id="a75" name="check-substitution-2" onChange={handleOptionChange} />
+                      <label className={`btn btn-default`} for="a75">&#128514; Funny</label>
+                    </div>
+
+                    <div class="buttonx">
+                      <input type="radio" value="Informative" disabled={loading || !emotionCaption} id="a76" name="check-substitution-2" onChange={handleOptionChange} />
+                      <label className={`btn btn-default`} for="a76">&#128187; Informative</label>
+                    </div>
+
+                  </form>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </main>
+    </main >
   )
 }

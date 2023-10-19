@@ -31,7 +31,7 @@ function colorLink() {
     }
 }
 linkColor.forEach(l => l.addEventListener('click', colorLink))
-feather.replace();
+// feather.replace();
 // Your code to run since DOM is loaded and ready
 
 

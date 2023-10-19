@@ -10,3 +10,6 @@ export const Login = () =>
 
 export const SignUp = () =>
   `${nextConfig.API_URL}/signup`
+
+export const Emotion = () =>
+  `${nextConfig.API_URL}/emotion`

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GetCaption, Login, SignUp, ValidateUser } from "./config/api";
+import { Emotion, GetCaption, Login, SignUp, ValidateUser } from "./config/api";
 import _ from "lodash";
 
 const getHeader = () => {
@@ -19,6 +19,10 @@ export const getCaption = (image) => {
             "Content-Type": "multipart/form-data",
         }
     });
+}
+
+export const getEmotionCaption = (body) => {
+    return axios.post(Emotion(), body);
 }
 
 export const login = (body) => {

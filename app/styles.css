@@ -386,9 +386,10 @@ section:nth-child(3) {
   --timePerLine: 1s;
 }
 
-.icon{
+.icon {
   font-size: 17px;
 }
+
 .icon:hover {
   color: #8732f4;
 }
@@ -571,4 +572,52 @@ section:nth-child(3) {
   animation-timing-function: linear;
   animation-play-state: running;
 
+}
+
+.emotions {
+  height: 86px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 25px;
+}
+
+.buttonx {
+  float: right;
+  margin: 0 5px 0 0;
+  width: 170px;
+  height: 40px;
+}
+
+.buttonx label,
+.buttonx input {
+  display: block;
+  color: white;
+  position: relative;
+  background: #8732f4;
+}
+
+.buttonx input[type="radio"] {
+  opacity: 0.011;
+  z-index: 100;
+}
+
+.buttonx input[type="radio"]:checked+label {
+  border: 1px solid white;
+  border-radius: 4px;
+}
+
+.buttonx label {
+  cursor: pointer;
+  z-index: 90;
+  line-height: 1.8em;
+}
+
+.buttonx label:hover {
+  color: white;
+  background: #8732f4;
+}
+
+.buttonx label:active {
+  color: white !important;
+  background: #8732f4 !important;
 }
