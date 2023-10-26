@@ -246,6 +246,18 @@ h3 em {
   box-shadow: 0 3rem 20rem -3rem rgba(255, 255, 255, 0.2);
 }
 
+.loading-animation {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.7);
+  padding: 10px;
+  border-radius: 5px;
+  color: #333;
+  font-weight: bold;
+}
+
 .caption-section {
   height: 50vh;
   overflow-x: auto;

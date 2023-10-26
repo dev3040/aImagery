@@ -4,27 +4,21 @@ import './styles.css'
 import { getCaption, getEmotionCaption, logout, validateUser } from './services/caption.service';
 import _ from "lodash"
 import { useRouter } from 'next/navigation'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { LuRefreshCcw, LuLayoutDashboard, LuLayers, LuLogOut } from 'react-icons/lu';
-
+import { useSearchParams } from 'next/navigation'
 
 export default function Home() {
   const hiddenFileInput = useRef(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [captions, setCaptions] = useState({});
+  const [captions, setCaptions] = useState(null);
   const [emotionCaption, setEmotionCaption] = useState("");
-  const router = useRouter()
+  const router = useRouter();
+  const searchParams = useSearchParams()
+  const mode = searchParams.get('mode')
   useEffect(() => {
-    // validateUser().then(user => {
-    //   if (_.isEmpty(user)) {
-    //     logout();
-    //     router.push("/login")
-    //   }
-    //   setUser(user);
-    // }).catch(err => {
-    //   logout();
-    //   router.push("/login")
-    // })
   }, [])
   const uploadImage = () => {
     hiddenFileInput.current.click();
@@ -35,14 +29,13 @@ export default function Home() {
   }
 
   const handleChange = event => {
-
+    const fileInput = event.target;
     if (event.target.files && event.target.files[0]) {
       setSelectedImage(event.target.files[0]);
       const formData = new FormData();
       formData.append("file", event.target.files[0]);
       setLoading(true)
       const radioButtons = document.querySelectorAll('input[type="radio"]');
-      console.log('radioButtons: ', radioButtons);
       radioButtons.forEach(radioButton => {
         radioButton.checked = false;
       });
@@ -52,9 +45,11 @@ export default function Home() {
         setLoading(false)
       })
         .catch((error) => {
-          console.log(error);
+          setSelectedImage(null)
+          toast.error(error.message || "Something wents wrong!")
           setLoading(false);
         });
+      fileInput.value = "";
     }
   };
 
@@ -71,6 +66,7 @@ export default function Home() {
     })
       .catch((error) => {
         console.log(error);
+        toast.error(error.message || "Something wents wrong!")
         setLoading(false);
       });
   }
@@ -78,6 +74,7 @@ export default function Home() {
 
   return (
     <main className='body-main'>
+      <ToastContainer />
       <header className="header" id="header">
         <div className="header_toggle">
           {/* <span style={{ color: "white" }} id="header-toggle"><i data-feather="menu"></i></span> */}
@@ -129,20 +126,27 @@ export default function Home() {
                   accept="image/*"
                   type="file"
                   name="image"
-                  class="img" />
+                  className="img" />
 
               </div>
             </div>
           </div>
 
-          <div className='center'>
+          <div className='center' style={{
+            margin: mode == "ppt" ? "0" : "none",
+          }}>
             <div className="row">
               <div className="col-6">
                 <div className="clipped" style={{
                   background: `url(${selectedImage ? URL.createObjectURL(selectedImage) : "https://s27363.pcdn.co/wp-content/uploads/2020/05/Best-Things-to-do-in-London-1200x900.jpg.optimal.jpg"})`,
                   backgroundRepeat: "no-repeat !important",
-                  backgroundSize: "cover"
-                }}></div>
+                  backgroundSize: "cover",
+                  filter: loading && !captions ? 'blur(5px)' : 'none',
+                  transition: 'filter 0.5s',
+                  height: captions && mode == "ppt" ? "15vh" : '50vh',
+                  transition: 'height 0.5s',
+                }}>
+                </div>
               </div>
               <div className="col-6 caption-section card">
                 <div className="card-header caption-header">
@@ -182,14 +186,14 @@ export default function Home() {
                     {
                       loading && <div className="row">
                         <div className="col-12">
-                          <div class="preloader">
-                            <div class="lines">
-                              <div class="line line-1"></div>
-                              <div class="line line-2"></div>
-                              <div class="line line-3"></div>
+                          <div className="preloader">
+                            <div className="lines">
+                              <div className="line line-1"></div>
+                              <div className="line line-2"></div>
+                              <div className="line line-3"></div>
                             </div>
 
-                            <div class="loading-text">LOADING</div>
+                            <div className="loading-text">LOADING</div>
                           </div>
                         </div>
                       </div>
@@ -197,7 +201,7 @@ export default function Home() {
                     {
                       (_.isEmpty(captions) && !loading) && <div className="row">
                         <div className="col-12">
-                          <span class="box">Please upload image for generating captions......</span>
+                          <span className="box">Please upload image for generating captions......</span>
                         </div>
                       </div>
                     }
@@ -207,32 +211,32 @@ export default function Home() {
               <div className='emotions'>
                 <div className='loadbox' style={{ padding: "10px 10px 10px 10px" }}>
                   <form>
-                    <div class="buttonx">
+                    <div className="buttonx">
                       <input type="radio" value="Serious" disabled={loading || !emotionCaption} id="a25" name="check-substitution-2" onChange={handleOptionChange} />
                       <label className={`btn btn-default`} for="a25">&#128528; Serious</label>
                     </div>
 
-                    <div class="buttonx">
+                    <div className="buttonx">
                       <input type="radio" value="Cool" disabled={loading || !emotionCaption} id="a50" name="check-substitution-2" onChange={handleOptionChange} />
                       <label className={`btn btn-default`} for="a50">&#x1F60E; Cool</label>
                     </div>
 
-                    <div class="buttonx">
+                    <div className="buttonx">
                       <input type="radio" value="Funny" disabled={loading || !emotionCaption} id="a75" name="check-substitution-2" onChange={handleOptionChange} />
                       <label className={`btn btn-default`} for="a75">&#128514; Funny</label>
                     </div>
 
-                    <div class="buttonx">
+                    <div className="buttonx">
                       <input type="radio" value="Informative" disabled={loading || !emotionCaption} id="a76" name="check-substitution-2" onChange={handleOptionChange} />
                       <label className={`btn btn-default`} for="a76">&#128187; Informative</label>
                     </div>
 
-                    <div class="buttonx">
+                    <div className="buttonx">
                       <input type="radio" value="Ecstatic" disabled={loading || !emotionCaption} id="a77" name="check-substitution-2" onChange={handleOptionChange} />
                       <label className={`btn btn-default`} for="a77">🙌🏻 Ecstatic</label>
                     </div>
 
-                    <div class="buttonx">
+                    <div className="buttonx">
                       <input type="radio" value="Controversial" disabled={loading || !emotionCaption} id="a80" name="check-substitution-2" onChange={handleOptionChange} />
                       <label className={`btn btn-default`} for="a80">😲 Controversial</label>
                     </div>
