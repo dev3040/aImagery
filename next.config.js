@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    API_URL: "https://1168-122-169-115-137.ngrok-free.app"
+    API_URL: "http://34.16.179.61"
 }
 
 module.exports = nextConfig

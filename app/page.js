@@ -41,6 +41,11 @@ export default function Home() {
       const formData = new FormData();
       formData.append("file", event.target.files[0]);
       setLoading(true)
+      const radioButtons = document.querySelectorAll('input[type="radio"]');
+      console.log('radioButtons: ', radioButtons);
+      radioButtons.forEach(radioButton => {
+        radioButton.checked = false;
+      });
       getCaption(formData).then((response) => {
         setEmotionCaption(response.data["image-description"])
         setCaptions(response.data.captions)
@@ -220,6 +225,16 @@ export default function Home() {
                     <div class="buttonx">
                       <input type="radio" value="Informative" disabled={loading || !emotionCaption} id="a76" name="check-substitution-2" onChange={handleOptionChange} />
                       <label className={`btn btn-default`} for="a76">&#128187; Informative</label>
+                    </div>
+
+                    <div class="buttonx">
+                      <input type="radio" value="Ecstatic" disabled={loading || !emotionCaption} id="a77" name="check-substitution-2" onChange={handleOptionChange} />
+                      <label className={`btn btn-default`} for="a77">🙌🏻 Ecstatic</label>
+                    </div>
+
+                    <div class="buttonx">
+                      <input type="radio" value="Controversial" disabled={loading || !emotionCaption} id="a80" name="check-substitution-2" onChange={handleOptionChange} />
+                      <label className={`btn btn-default`} for="a80">😲 Controversial</label>
                     </div>
 
                   </form>

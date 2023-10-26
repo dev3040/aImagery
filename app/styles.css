@@ -575,7 +575,6 @@ section:nth-child(3) {
 }
 
 .emotions {
-  height: 86px;
   display: flex;
   justify-content: center;
   margin-bottom: 25px;
@@ -586,6 +585,7 @@ section:nth-child(3) {
   margin: 0 5px 0 0;
   width: 170px;
   height: 40px;
+  margin: 10px;
 }
 
 .buttonx label,
