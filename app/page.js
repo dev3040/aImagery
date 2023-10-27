@@ -50,6 +50,7 @@ export default function Home() {
           setLoading(false);
         });
       fileInput.value = "";
+      setCaptions(null)
     }
   };
 
@@ -143,12 +144,13 @@ export default function Home() {
                   backgroundSize: "cover",
                   filter: loading && !captions ? 'blur(5px)' : 'none',
                   transition: 'filter 0.5s',
-                  height: captions && mode == "ppt" ? "15vh" : '50vh',
+                  height: captions && mode == "ppt" && !loading ? "15vh" : '50vh',
+                  margin: mode == "ppt" ? "2% 50%" : 'none',
                   transition: 'height 0.5s',
                 }}>
                 </div>
               </div>
-              <div className="col-6 caption-section card">
+              <div className="col-6 caption-section card" style={{ width: mode == "ppt" ? "86vw" : '', transition: 'width 0.05s', height: mode == "ppt" ? "75vh" : 'none' }}>
                 <div className="card-header caption-header">
                   <div style={{ color: "white" }}>Captions</div>
                   <div>
@@ -160,7 +162,7 @@ export default function Home() {
                     {
                       (!loading && !_.isEmpty(captions)) && <div className="row">
                         <div className="col-12" style={{ whiteSpace: "pre-wrap" }}>
-                          <div className='typewriter monospace big-caret lorem'>
+                          <div className={`${captions && mode == "ppt" ? 'typewriter2' : 'typewriter'}  monospace big-caret lorem`}>
                             <p>
                               {captions}
                             </p>

@@ -373,6 +373,63 @@ h3 em {
     caret 0.5s steps(2) infinite;
 }
 
+/* PPT */
+
+.typewriter2 {
+  --bgColor: #101010;
+  --lines: 500;
+  --lineHeight: 2.5rem;
+  --timePerLine: 4s;
+  --widthCh: 100%;
+  --width: calc(var(--widthCh) * 1.5ch);
+  /* do not touch the time property!!! */
+  --time: calc(var(--lines) * var(--timePerLine));
+  animation: grow var(--time) steps(var(--lines));
+  animation-fill-mode: forwards;
+  background: var(--bgColor);
+  line-height: var(--lineHeight);
+  max-height: var(--lineHeight);
+  overflow: hidden;
+  position: relative;
+  width: var(--width);
+  font-size: 30px;
+  /* word-break: break-all; */
+}
+
+.typewriter2::before {
+  content: "";
+  animation:
+    type var(--timePerLine) linear infinite,
+    carriageReturn var(--time) steps(var(--lines)) var(--lines),
+    caret 0.5s steps(2) infinite;
+  background: var(--bgColor);
+  border-left: 2px solid;
+  bottom: 0;
+  height: 2.5rem;
+  position: absolute;
+  right: 0;
+  width: 100%;
+}
+
+.typewriter2.no-caret::before {
+  border-left-width: 0;
+}
+
+.typewriter2.big-caret::before {
+  border-left-width: 1ch;
+}
+
+.typewriter2.monospace {
+  font-family: monospace, monospace;
+}
+
+.typewriter2.monospace::before {
+  animation:
+    type var(--timePerLine) steps(var(--widthCh)) infinite,
+    carriageReturn var(--time) steps(var(--lines)) var(--lines),
+    caret 0.5s steps(2) infinite;
+}
+
 /* DEMO */
 section {
   box-sizing: border-box;
