@@ -1,13 +1,14 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import './styles.css'
-import { getCaption, getEmotionCaption, logout, validateUser } from './services/caption.service';
+import { checkServer, getCaption, getEmotionCaption, logout, validateUser } from './services/caption.service';
 import _ from "lodash"
 import { useRouter } from 'next/navigation'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { LuRefreshCcw, LuLayoutDashboard, LuLayers, LuLogOut } from 'react-icons/lu';
 import { useSearchParams } from 'next/navigation'
+import axios from 'axios';
 
 export default function Home() {
   const hiddenFileInput = useRef(null);
@@ -19,6 +20,15 @@ export default function Home() {
   const searchParams = useSearchParams()
   const mode = searchParams.get('mode')
   useEffect(() => {
+    setLoading(true)
+    checkServer().then(() => {
+      toast.success("Server Connected 😄!")
+      setLoading(false)
+    }).catch(error => {
+      toast.error("It seems like there's an issue with the server 😕")
+      setLoading(false)
+
+    })
   }, [])
   const uploadImage = () => {
     hiddenFileInput.current.click();

@@ -1,6 +1,10 @@
 import axios from "axios";
-import { Emotion, GetCaption, Login, SignUp, ValidateUser } from "./config/api";
+import { CheckServer, Emotion, GetCaption, Login, SignUp, ValidateUser } from "./config/api";
 import _ from "lodash";
+
+export const checkServer = () => {
+    return axios.get(CheckServer())
+}
 
 const getHeader = () => {
     const userDetails = getToken();
