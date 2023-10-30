@@ -230,7 +230,7 @@ h3 em {
 
 .clipped {
   height: 50vh;
-  margin: 8%;
+  margin: 8% 0%;
   width: 100%;
   position: relative;
   overflow: hidden;
@@ -261,8 +261,8 @@ h3 em {
 .caption-section {
   height: 50vh;
   overflow-x: auto;
-  margin: 4%;
-  width: 44em;
+  margin: 5% 0%;
+  width: 100%;
   background-color: #101010;
   color: white;
 }
@@ -595,21 +595,40 @@ section:nth-child(3) {
   .caption-section {
     height: 50vh;
     overflow-x: auto;
-    margin: 4%;
-    width: 64em;
+    margin: 5% 0%;
+    width: 100%;
     background-color: #101010;
     color: white;
   }
 
   .clipped {
-    width: 57vw;
+    width: 100%;
   }
 
   .center {
-    margin: 0% 17%;
+    margin: 0% 0%;
   }
 }
 
+@media screen and (max-width: 1500px) {
+  .caption-section {
+    height: 75vh;
+    overflow-x: auto;
+    margin: 5% 0%;
+    width: 100%;
+    background-color: #101010;
+    color: white;
+  }
+
+  .clipped {
+    width: 100%;
+    margin: 0;
+  }
+
+  .center {
+    margin: 0% 0%;
+  }
+}
 .disabled-button {
   background-color: gray;
   /* Change this to your desired color */
@@ -646,11 +665,11 @@ section:nth-child(3) {
 .emotions {
   display: flex;
   justify-content: center;
-  margin-bottom: 25px;
+  margin-bottom: 0px;
 }
 
 .buttonx {
-  float: right;
+  /* float: right;   */
   margin: 0 5px 0 0;
   width: 170px;
   height: 40px;
@@ -689,4 +708,12 @@ section:nth-child(3) {
 .buttonx label:active {
   color: white !important;
   background: #8732f4 !important;
+}
+
+.table-design{
+  width: 100%;
+}
+
+.table-design td{
+  width: 0;
 }

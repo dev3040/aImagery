@@ -134,10 +134,11 @@ export default function Home() {
           </div>
 
           <div className='center' style={{
-            margin: mode == "ppt" ? "0" : "none",
+            margin: mode == "ppt" ? "0" : "",
+            padding: "40px"
           }}>
             <div className="row">
-              <div className="col-6">
+              <div className={mode == "ppt" ? "col-xxl-12" : "col-xxl-4"}>
                 <div className="clipped" style={{
                   background: `url(${selectedImage ? URL.createObjectURL(selectedImage) : "https://s27363.pcdn.co/wp-content/uploads/2020/05/Best-Things-to-do-in-London-1200x900.jpg.optimal.jpg"})`,
                   backgroundRepeat: "no-repeat !important",
@@ -145,30 +146,73 @@ export default function Home() {
                   filter: loading && !captions ? 'blur(5px)' : 'none',
                   transition: 'filter 0.5s',
                   height: captions && mode == "ppt" && !loading ? "15vh" : '50vh',
-                  margin: mode == "ppt" ? "2% 50%" : 'none',
+                  margin: mode == "ppt" ? "2% 0%" : 'none',
                   transition: 'height 0.5s',
                 }}>
                 </div>
               </div>
-              <div className="col-6 caption-section card" style={{ width: mode == "ppt" ? "86vw" : '', transition: 'width 0.05s', height: mode == "ppt" ? "75vh" : 'none' }}>
-                <div className="card-header caption-header">
-                  <div style={{ color: "white" }}>Captions</div>
-                  <div>
-                    <span className='icon' disabled={loading} onClick={handleRefresh}><LuRefreshCcw className={`icon ${loading ? 'refresh-start' : ''}`} /></span>
-                  </div>
-                </div>
-                <div className="card-body">
-                  <div className=''>
-                    {
-                      (!loading && !_.isEmpty(captions)) && <div className="row">
-                        <div className="col-12" style={{ whiteSpace: "pre-wrap" }}>
-                          <div className={`${captions && mode == "ppt" ? 'typewriter2' : 'typewriter'}  monospace big-caret lorem`}>
-                            <p>
-                              {captions}
-                            </p>
+              <div className={mode == "ppt" ? "col-xxl-12" : "col-xxl-8"}>
+                <table style={{ width: "100%" }}>
+                  <tbody>
+                    <tr>
+                      <td style={{ width: "0px" }}>
+                        <div className='emotions'>
+                          <div className='loadbox' style={{ padding: "10px 10px 10px 10px" }}>
+                            <form>
+                              <div className="buttonx">
+                                <input type="radio" value="Serious" disabled={loading || !emotionCaption} id="a25" name="check-substitution-2" onChange={handleOptionChange} />
+                                <label className={`btn btn-default`} for="a25">&#128528; Serious</label>
+                              </div>
+
+                              <div className="buttonx">
+                                <input type="radio" value="Cool" disabled={loading || !emotionCaption} id="a50" name="check-substitution-2" onChange={handleOptionChange} />
+                                <label className={`btn btn-default`} for="a50">&#x1F60E; Cool</label>
+                              </div>
+
+                              <div className="buttonx">
+                                <input type="radio" value="Funny" disabled={loading || !emotionCaption} id="a75" name="check-substitution-2" onChange={handleOptionChange} />
+                                <label className={`btn btn-default`} for="a75">&#128514; Funny</label>
+                              </div>
+
+                              <div className="buttonx">
+                                <input type="radio" value="Informative" disabled={loading || !emotionCaption} id="a76" name="check-substitution-2" onChange={handleOptionChange} />
+                                <label className={`btn btn-default`} for="a76">&#128187; Informative</label>
+                              </div>
+
+                              <div className="buttonx">
+                                <input type="radio" value="Ecstatic" disabled={loading || !emotionCaption} id="a77" name="check-substitution-2" onChange={handleOptionChange} />
+                                <label className={`btn btn-default`} for="a77">🙌🏻 Ecstatic</label>
+                              </div>
+
+                              <div className="buttonx">
+                                <input type="radio" value="Controversial" disabled={loading || !emotionCaption} id="a80" name="check-substitution-2" onChange={handleOptionChange} />
+                                <label className={`btn btn-default`} for="a80">😲 Controversial</label>
+                              </div>
+
+                            </form>
                           </div>
                         </div>
-                        {/* <div className="col-1">
+                      </td>
+                      <td>
+                        <div className="caption-section card" style={{ width: mode == "ppt" ? "100%" : '', transition: 'width 0.05s', height: mode == "ppt" ? "75vh" : '', margin: mode == "ppt" ? "0% 0%" : 'none', }}>
+                          <div className="card-header caption-header">
+                            <div style={{ color: "white" }}>Captions</div>
+                            <div>
+                              <span className='icon' disabled={loading} onClick={handleRefresh}><LuRefreshCcw className={`icon ${loading ? 'refresh-start' : ''}`} /></span>
+                            </div>
+                          </div>
+                          <div className="card-body">
+                            <div className=''>
+                              {
+                                (!loading && !_.isEmpty(captions)) && <div className="row">
+                                  <div className="col-12" style={{ whiteSpace: "pre-wrap" }}>
+                                    <div className={`${captions && mode == "ppt" ? 'typewriter2' : 'typewriter'}  monospace big-caret lorem`}>
+                                      <p>
+                                        {captions}
+                                      </p>
+                                    </div>
+                                  </div>
+                                  {/* <div className="col-1">
                           <span>1</span>
                         </div>
                         <div className="col-10">
@@ -183,69 +227,39 @@ export default function Home() {
                         <div className="col-1">
                           <span className='icon'><i data-feather="copy"></i></span>
                         </div> */}
-                      </div>
-                    }
-                    {
-                      loading && <div className="row">
-                        <div className="col-12">
-                          <div className="preloader">
-                            <div className="lines">
-                              <div className="line line-1"></div>
-                              <div className="line line-2"></div>
-                              <div className="line line-3"></div>
-                            </div>
+                                </div>
+                              }
+                              {
+                                loading && <div className="row">
+                                  <div className="col-12">
+                                    <div className="preloader">
+                                      <div className="lines">
+                                        <div className="line line-1"></div>
+                                        <div className="line line-2"></div>
+                                        <div className="line line-3"></div>
+                                      </div>
 
-                            <div className="loading-text">LOADING</div>
+                                      <div className="loading-text">LOADING</div>
+                                    </div>
+                                  </div>
+                                </div>
+                              }
+                              {
+                                (_.isEmpty(captions) && !loading) && <div className="row">
+                                  <div className="col-12">
+                                    <span className="box">Please upload image for generating captions......</span>
+                                  </div>
+                                </div>
+                              }
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    }
-                    {
-                      (_.isEmpty(captions) && !loading) && <div className="row">
-                        <div className="col-12">
-                          <span className="box">Please upload image for generating captions......</span>
-                        </div>
-                      </div>
-                    }
-                  </div>
-                </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
-              <div className='emotions'>
-                <div className='loadbox' style={{ padding: "10px 10px 10px 10px" }}>
-                  <form>
-                    <div className="buttonx">
-                      <input type="radio" value="Serious" disabled={loading || !emotionCaption} id="a25" name="check-substitution-2" onChange={handleOptionChange} />
-                      <label className={`btn btn-default`} for="a25">&#128528; Serious</label>
-                    </div>
 
-                    <div className="buttonx">
-                      <input type="radio" value="Cool" disabled={loading || !emotionCaption} id="a50" name="check-substitution-2" onChange={handleOptionChange} />
-                      <label className={`btn btn-default`} for="a50">&#x1F60E; Cool</label>
-                    </div>
-
-                    <div className="buttonx">
-                      <input type="radio" value="Funny" disabled={loading || !emotionCaption} id="a75" name="check-substitution-2" onChange={handleOptionChange} />
-                      <label className={`btn btn-default`} for="a75">&#128514; Funny</label>
-                    </div>
-
-                    <div className="buttonx">
-                      <input type="radio" value="Informative" disabled={loading || !emotionCaption} id="a76" name="check-substitution-2" onChange={handleOptionChange} />
-                      <label className={`btn btn-default`} for="a76">&#128187; Informative</label>
-                    </div>
-
-                    <div className="buttonx">
-                      <input type="radio" value="Ecstatic" disabled={loading || !emotionCaption} id="a77" name="check-substitution-2" onChange={handleOptionChange} />
-                      <label className={`btn btn-default`} for="a77">🙌🏻 Ecstatic</label>
-                    </div>
-
-                    <div className="buttonx">
-                      <input type="radio" value="Controversial" disabled={loading || !emotionCaption} id="a80" name="check-substitution-2" onChange={handleOptionChange} />
-                      <label className={`btn btn-default`} for="a80">😲 Controversial</label>
-                    </div>
-
-                  </form>
-                </div>
-              </div>
             </div>
           </div>
         </div>
