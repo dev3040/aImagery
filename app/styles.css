@@ -260,11 +260,16 @@ h3 em {
 
 .caption-section {
   height: 50vh;
-  overflow-x: auto;
   margin: 5% 0%;
   width: 100%;
+  border: 1px solid;
   background-color: #101010;
   color: white;
+}
+
+.caption-section .card-body {
+  overflow-x: auto;
+  margin: 1px;
 }
 
 .card-header {
@@ -578,15 +583,15 @@ section:nth-child(3) {
   animation: cursor-blink 0.50s steps(100) infinite;
 }
 
-.caption-section::-webkit-scrollbar {
+.caption-section .card-body::-webkit-scrollbar {
   width: 5px;
 }
 
-.caption-section::-webkit-scrollbar-track {
+.caption-section .card-body::-webkit-scrollbar-track {
   background-color: black;
 }
 
-.caption-section::-webkit-scrollbar-thumb {
+.caption-section .card-body::-webkit-scrollbar-thumb {
   background: #8732f3;
   border-radius: 25px;
 }
@@ -672,9 +677,9 @@ section:nth-child(3) {
 .buttonx {
   /* float: right;   */
   margin: 0 5px 0 0;
-  width: 170px;
+  width: 176px;
   height: 40px;
-  margin: 10px;
+  margin: 10px 0px 0px 10px;
 }
 
 .buttonx label,
@@ -683,6 +688,7 @@ section:nth-child(3) {
   color: white;
   position: relative;
   background: #8732f4;
+  border-radius: 0px;
 }
 
 .buttonx input[type="radio"] {
@@ -691,8 +697,22 @@ section:nth-child(3) {
 }
 
 .buttonx input[type="radio"]:checked+label {
-  border: 1px solid white;
-  border-radius: 4px;
+  border-top: 1px solid white;
+  border-bottom: 1px solid white;
+  border-left: 1px solid white;
+  border-radius: 3px;
+  background: #101010;
+  width: 180px;
+  transition: border-top border-bottom border-left 0.3s;
+}
+
+.buttonx input[type="radio"]+label {
+  border: 1px solid transparent;
+  border-radius: 0px;
+  width: 170px;
+  display: inline-block;
+  transition: width 0.3s;
+  /* Add a transition for the width property */
 }
 
 .buttonx label {

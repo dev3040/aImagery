@@ -16,6 +16,8 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [captions, setCaptions] = useState(null);
   const [emotionCaption, setEmotionCaption] = useState("");
+  const [genericCaption, setGenericCaption] = useState("");
+  const [selectedVal, setSelectedVal] = useState("Generic");
   const router = useRouter();
   const searchParams = useSearchParams()
   const mode = searchParams.get('mode')
@@ -52,6 +54,7 @@ export default function Home() {
       getCaption(formData).then((response) => {
         setEmotionCaption(response.data["image-description"])
         setCaptions(response.data.captions)
+        setGenericCaption(response.data.captions)
         setLoading(false)
       })
         .catch((error) => {
@@ -65,21 +68,25 @@ export default function Home() {
   };
 
   const handleOptionChange = (changeEvent) => {
+    setSelectedVal(changeEvent.target.value)
     const payload = {
       image_description: emotionCaption,
       emotion: changeEvent.target.value
     }
-    console.log('payload: ', payload);
-    setLoading(true)
-    getEmotionCaption(payload).then((response) => {
-      setCaptions(response.data.emotion_caption)
-      setLoading(false)
-    })
-      .catch((error) => {
-        console.log(error);
-        toast.error(error.message || "Something wents wrong!")
-        setLoading(false);
-      });
+    if (changeEvent.target.value == "Generic") {
+      setCaptions(genericCaption)
+    } else {
+      setLoading(true)
+      getEmotionCaption(payload).then((response) => {
+        setCaptions(response.data.emotion_caption)
+        setLoading(false)
+      })
+        .catch((error) => {
+          console.log(error);
+          toast.error(error.message || "Something wents wrong!")
+          setLoading(false);
+        });
+    }
   }
 
 
@@ -162,40 +169,45 @@ export default function Home() {
                 </div>
               </div>
               <div className={mode == "ppt" ? "col-xxl-12" : "col-xxl-8"}>
-                <table style={{ width: "100%" }}>
+                <table style={{ width: "100%", margin: "3.5% 0%" }}>
                   <tbody>
                     <tr>
                       <td style={{ width: "0px" }}>
                         <div className='emotions'>
-                          <div className='loadbox' style={{ padding: "10px 10px 10px 10px" }}>
+                          <div className='loadbox'>
                             <form>
                               <div className="buttonx">
-                                <input type="radio" value="Serious" disabled={loading || !emotionCaption} id="a25" name="check-substitution-2" onChange={handleOptionChange} />
+                                <input type="radio" value="Generic" checked={selectedVal == "Generic"} disabled={loading || !emotionCaption} id="a21" name="check-substitution-2" onChange={handleOptionChange} />
+                                <label className={`btn btn-default`} for="a21">💻 Generic</label>
+                              </div>
+
+                              <div className="buttonx">
+                                <input type="radio" value="Serious" checked={selectedVal == "Serious"} disabled={loading || !emotionCaption} id="a25" name="check-substitution-2" onChange={handleOptionChange} />
                                 <label className={`btn btn-default`} for="a25">&#128528; Serious</label>
                               </div>
 
                               <div className="buttonx">
-                                <input type="radio" value="Cool" disabled={loading || !emotionCaption} id="a50" name="check-substitution-2" onChange={handleOptionChange} />
+                                <input type="radio" value="Cool" checked={selectedVal == "Cool"} disabled={loading || !emotionCaption} id="a50" name="check-substitution-2" onChange={handleOptionChange} />
                                 <label className={`btn btn-default`} for="a50">&#x1F60E; Cool</label>
                               </div>
 
                               <div className="buttonx">
-                                <input type="radio" value="Funny" disabled={loading || !emotionCaption} id="a75" name="check-substitution-2" onChange={handleOptionChange} />
+                                <input type="radio" value="Funny" checked={selectedVal == "Funny"} disabled={loading || !emotionCaption} id="a75" name="check-substitution-2" onChange={handleOptionChange} />
                                 <label className={`btn btn-default`} for="a75">&#128514; Funny</label>
                               </div>
 
                               <div className="buttonx">
-                                <input type="radio" value="Informative" disabled={loading || !emotionCaption} id="a76" name="check-substitution-2" onChange={handleOptionChange} />
+                                <input type="radio" value="Informative" checked={selectedVal == "Informative"} disabled={loading || !emotionCaption} id="a76" name="check-substitution-2" onChange={handleOptionChange} />
                                 <label className={`btn btn-default`} for="a76">&#128187; Informative</label>
                               </div>
 
                               <div className="buttonx">
-                                <input type="radio" value="Ecstatic" disabled={loading || !emotionCaption} id="a77" name="check-substitution-2" onChange={handleOptionChange} />
+                                <input type="radio" value="Ecstatic" checked={selectedVal == "Ecstatic"} disabled={loading || !emotionCaption} id="a77" name="check-substitution-2" onChange={handleOptionChange} />
                                 <label className={`btn btn-default`} for="a77">🙌🏻 Ecstatic</label>
                               </div>
 
                               <div className="buttonx">
-                                <input type="radio" value="Controversial" disabled={loading || !emotionCaption} id="a80" name="check-substitution-2" onChange={handleOptionChange} />
+                                <input type="radio" value="Controversial" checked={selectedVal == "Controversial"} disabled={loading || !emotionCaption} id="a80" name="check-substitution-2" onChange={handleOptionChange} />
                                 <label className={`btn btn-default`} for="a80">😲 Controversial</label>
                               </div>
 
@@ -204,7 +216,7 @@ export default function Home() {
                         </div>
                       </td>
                       <td>
-                        <div className="caption-section card" style={{ width: mode == "ppt" ? "100%" : '', transition: 'width 0.05s', height: mode == "ppt" ? "75vh" : '', margin: mode == "ppt" ? "0% 0%" : 'none', }}>
+                        <div className="caption-section card" style={{ width: mode == "ppt" ? "100%" : '', transition: 'width 0.05s', height: mode == "ppt" ? "75vh" : '', margin: mode == "ppt" ? "0% 0%" : '0', }}>
                           <div className="card-header caption-header">
                             <div style={{ color: "white" }}>Captions</div>
                             <div>
