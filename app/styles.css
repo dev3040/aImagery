@@ -391,7 +391,7 @@ h3 em {
   max-height: var(--lineHeight);
   overflow: hidden;
   position: relative;
-  width: var(--width);
+  width: 100%;
   font-size: 30px;
   /* word-break: break-all; */
 }
@@ -629,6 +629,7 @@ section:nth-child(3) {
     margin: 0% 0%;
   }
 }
+
 .disabled-button {
   background-color: gray;
   /* Change this to your desired color */
@@ -710,10 +711,10 @@ section:nth-child(3) {
   background: #8732f4 !important;
 }
 
-.table-design{
+.table-design {
   width: 100%;
 }
 
-.table-design td{
+.table-design td {
   width: 0;
 }
