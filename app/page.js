@@ -198,7 +198,7 @@ export default function Home() {
 
                               <div className="buttonx">
                                 <input type="radio" value="Informative" checked={selectedVal == "Informative"} disabled={loading || !emotionCaption} id="a76" name="check-substitution-2" onChange={handleOptionChange} />
-                                <label className={`btn btn-default`} for="a76">&#128187; Informative</label>
+                                <label className={`btn btn-default`} for="a76">📄 Informative</label>
                               </div>
 
                               <div className="buttonx">
