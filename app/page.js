@@ -160,12 +160,30 @@ export default function Home() {
                   background: `url(${selectedImage ? URL.createObjectURL(selectedImage) : "https://s27363.pcdn.co/wp-content/uploads/2020/05/Best-Things-to-do-in-London-1200x900.jpg.optimal.jpg"})`,
                   backgroundRepeat: "no-repeat !important",
                   backgroundSize: "cover",
-                  filter: loading && !captions ? 'blur(5px)' : 'none',
+                  // filter: loading && !captions ? 'blur(5px)' : 'none',
                   transition: 'filter 0.5s',
-                  height: captions && mode == "ppt" && !loading ? "15vh" : '50vh',
+                  height: captions && mode == "ppt" && (!loading || (loading && captions)) ? "15vh" : '50vh',
                   margin: mode == "ppt" ? "2% 0%" : 'none',
                   transition: 'height 0.5s',
                 }}>
+                  {loading && !captions && (
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        height: "100%",
+                        background: "rgb(17 17 17 / 70%)",
+                        display: "flex",
+                        color: "black",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                    </div>
+                  )}
                 </div>
               </div>
               <div className={mode == "ppt" ? "col-xxl-12" : "col-xxl-8"}>
