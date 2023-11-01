@@ -8,9 +8,9 @@ export const checkServer = () => {
 
 const getHeader = () => {
     const userDetails = getToken();
-    if (!_.isEmpty(userDetails?.access_token)) {
+    if (!_.isEmpty(userDetails?.access?.token)) {
         return {
-            Authorization: `Bearer ${userDetails?.access_token}`
+            Authorization: `Bearer ${userDetails?.access?.token}`
         }
     }
     return
@@ -30,6 +30,7 @@ export const getEmotionCaption = (body) => {
 }
 
 export const login = (body) => {
+    console.log('body: ', body);
     return axios.post(Login(), body,
         {
             headers: {
@@ -64,10 +65,10 @@ export const getToken = () => {
 
 export const validateUser = async () => {
     const userDetails = getToken();
-    if (_.isEmpty(userDetails)) {
+    if (_.isEmpty(userDetails) && _.isEmpty(userDetails?.user)) {
         return;
     }
-    return axios.get(ValidateUser(userDetails?.id), {
+    return axios.get(ValidateUser(userDetails?.user.id), {
         headers: {
             ...getHeader()
         }

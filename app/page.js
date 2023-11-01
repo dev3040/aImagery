@@ -3,12 +3,13 @@ import { useEffect, useRef, useState } from 'react';
 import './styles.css'
 import { checkServer, getCaption, getEmotionCaption, logout, validateUser } from './services/caption.service';
 import _ from "lodash"
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { LuRefreshCcw, LuLayoutDashboard, LuLayers, LuLogOut } from 'react-icons/lu';
+import { LuRefreshCcw, LuLayoutDashboard, LuLayers, LuSettings2, LuLogOut } from 'react-icons/lu';
 import { useSearchParams } from 'next/navigation'
 import axios from 'axios';
+import Link from 'next/link';
 
 export default function Home() {
   const hiddenFileInput = useRef(null);
@@ -21,16 +22,33 @@ export default function Home() {
   const router = useRouter();
   const searchParams = useSearchParams()
   const mode = searchParams.get('mode')
+  const pathname = usePathname()
   useEffect(() => {
     setLoading(true)
-    checkServer().then(() => {
-      toast.success("Server Connected 😄!")
-      setLoading(false)
-    }).catch(error => {
-      toast.error("It seems like there's an issue with the server 😕")
-      setLoading(false)
+    validateUser().then(res => {
+      if (!_.isEmpty(res)) {
+        checkServer().then(() => {
+          toast.success("Server Connected 😄!")
+          setLoading(false)
+        }).catch(error => {
+          toast.error("It seems like there's an issue with the server 😕")
+          setLoading(false)
+        })
+      } else {
+        toast.error("Something wrong!")
+        setLoading(false)
+        router.push("/login")
+        localStorage.clear();
+      }
 
     })
+      .catch(error => {
+        toast.error("Something wrong!")
+        setLoading(false)
+        router.push("/login")
+        localStorage.clear();
+      })
+
   }, [])
   const uploadImage = () => {
     hiddenFileInput.current.click();
@@ -109,10 +127,12 @@ export default function Home() {
               <span className="nav_logo-name">Image Caption</span>
             </a>
             <div className="nav_list">
-              <a href="#" className="nav_link active">
+              <Link href="/" className="nav_link active">
                 <span style={{ color: "white" }}><LuLayoutDashboard style={{ fontSize: "20px" }} /></span>
-                <span className="nav_name">Dashboard</span>
-              </a>
+              </Link>
+              <Link href="/setting" className="nav_link">
+                <span style={{ color: "white" }}><LuSettings2 style={{ fontSize: "20px" }} /></span>
+              </Link>
             </div>
           </div>
           {/* <a className="nav_link" onClick={() => {

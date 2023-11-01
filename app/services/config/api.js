@@ -3,10 +3,10 @@ export const GetCaption = () =>
   `${nextConfig.API_URL}/caption`;
 
 export const ValidateUser = (id) =>
-  `${nextConfig.API_URL}/profile/${id}`
+  `http://aimageryapi.project-demo.info:3004/v1/users/${id}`
 
 export const Login = () =>
-  `${nextConfig.API_URL}/login`
+  `http://aimageryapi.project-demo.info:3004/v1/auth/login`
 
 export const SignUp = () =>
   `${nextConfig.API_URL}/signup`

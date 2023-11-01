@@ -60,7 +60,7 @@ export default function Dashboard() {
                     })
             } else {
                 var details = {
-                    'username': values.email,
+                    'email': values.email,
                     'password': values.password,
                 };
 
@@ -78,7 +78,8 @@ export default function Dashboard() {
                         router.push("/")
                     })
                     .catch((err) => {
-                        toast.error(err.response?.data?.detail || "Something wents wrong!")
+                        console.log('err: ', err);
+                        toast.error(err.response?.data?.message || "Something wents wrong!")
                         setLoading(false);
                     })
             }
@@ -147,23 +148,12 @@ export default function Dashboard() {
                                     Username / Password?
                                 </a>
                             </div> */}
-                                {
-                                    isRegister ? (
-                                        <div className="text-center p-t-136 create-acc">
-                                            <a className="txt2" onClick={() => setRegister(false)}>
-                                                Login from here
-                                                <i className="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
-                                            </a>
-                                        </div>
-                                    ) : (
-                                        <div className="text-center p-t-136 create-acc">
-                                            <a className="txt2" onClick={() => setRegister(true)}>
-                                                Create your Account
-                                                <i className="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
-                                            </a>
-                                        </div>
-                                    )
-                                }
+                                <div className="text-center p-t-136 create-acc">
+                                    {/* <a className="txt2" onClick={() => setRegister(false)}>
+                                        Login from here
+                                        <i className="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
+                                    </a> */}
+                                </div>
                             </div>
                         </div>
                     </div>
