@@ -7,6 +7,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { LuRefreshCcw, LuLayoutDashboard, LuLayers, LuSettings2, LuLogOut } from 'react-icons/lu';
+import { RxExit } from 'react-icons/rx';
 import { useSearchParams } from 'next/navigation'
 import axios from 'axios';
 import Link from 'next/link';
@@ -132,6 +133,11 @@ export default function Home() {
               </Link>
               <Link href="/setting" className="nav_link">
                 <span style={{ color: "white" }}><LuSettings2 style={{ fontSize: "20px" }} /></span>
+              </Link>
+              <Link href="/login" onClick={() => {
+                localStorage.clear();
+              }} className="nav_link">
+                <span style={{ color: "white" }}><RxExit style={{ fontSize: "20px" }} /></span>
               </Link>
             </div>
           </div>
