@@ -9,7 +9,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import { LuRefreshCcw, LuLayoutDashboard, LuLayers, LuSettings2, LuLogOut } from 'react-icons/lu';
 import { RxExit } from 'react-icons/rx';
 import { useSearchParams } from 'next/navigation'
-import axios from 'axios';
 import Link from 'next/link';
 
 export default function Home() {
@@ -61,6 +60,7 @@ export default function Home() {
 
   const handleChange = event => {
     const fileInput = event.target;
+    setSelectedVal("Generic")
     if (event.target.files && event.target.files[0]) {
       setSelectedImage(event.target.files[0]);
       const formData = new FormData();
@@ -178,19 +178,22 @@ export default function Home() {
 
           <div className='center' style={{
             margin: mode == "ppt" ? "0" : "",
-            padding: "40px"
+            padding: mode == "ppt" && captions && mode == "ppt" && (!loading || (loading && captions)) ? "0px 40px" : "40px"
           }}>
             <div className="row">
-              <div className={mode == "ppt" ? "col-xxl-12" : "col-xxl-4"}>
+              <div className={mode == "ppt" ? "col-xxl-12" : "col-xxl-4"} style={{
+                visibility: mode == "ppt" && captions && mode == "ppt" && (!loading || (loading && captions)) ? "hidden" : "visible",
+                opacity: mode == "ppt" && captions && mode == "ppt" && (!loading || (loading && captions)) ? "0" : "1",
+                transition: "opacity 2s, visibility 2s",
+              }}>
                 <div className="clipped" style={{
                   background: `url(${selectedImage ? URL.createObjectURL(selectedImage) : "https://s27363.pcdn.co/wp-content/uploads/2020/05/Best-Things-to-do-in-London-1200x900.jpg.optimal.jpg"})`,
                   backgroundRepeat: "no-repeat !important",
                   backgroundSize: "cover",
                   // filter: loading && !captions ? 'blur(5px)' : 'none',
-                  transition: 'filter 0.5s',
-                  height: captions && mode == "ppt" && (!loading || (loading && captions)) ? "15vh" : '50vh',
-                  margin: mode == "ppt" ? "2% 0%" : 'none',
-                  transition: 'height 0.5s',
+                  height: captions && mode == "ppt" && (!loading || (loading && captions)) ? "0" : '50vh',
+                  margin: mode == "ppt" ? "0% 0%" : 'none',
+                  transition: 'margin 2s, height 2s',
                 }}>
                   {loading && !captions && (
                     <div
@@ -207,7 +210,14 @@ export default function Home() {
                         alignItems: "center",
                       }}
                     >
-                      <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                      <div className="scroller">
+                        <div className="inner">
+                          <p>Please wait...</p>
+                          <p>We are currently processing your image...</p>
+                          <p>You can also generate caption with emotions</p>
+                          <p>Take a breath we are close enough...</p>
+                        </div>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -217,42 +227,53 @@ export default function Home() {
                   <tbody>
                     <tr>
                       <td style={{ width: "0px" }}>
+                        <div className="clipped" style={{
+                          visibility: mode == "ppt" && captions && mode == "ppt" && (!loading || (loading && captions)) ? "visible" : "hidden",
+                          opacity: mode == "ppt" && captions && mode == "ppt" && (!loading || (loading && captions)) ? "1" : "0",
+                          background: `url(${selectedImage ? URL.createObjectURL(selectedImage) : "https://s27363.pcdn.co/wp-content/uploads/2020/05/Best-Things-to-do-in-London-1200x900.jpg.optimal.jpg"})`,
+                          backgroundRepeat: "no-repeat !important",
+                          backgroundSize: "cover",
+                          height: mode == "ppt" && captions && mode == "ppt" && (!loading || (loading && captions)) ? "15vh" : 0,
+                          width: mode == "ppt" && captions && mode == "ppt" && (!loading || (loading && captions)) ? "90%" : 0,
+                          marginLeft: "10px",
+                          transition: 'opacity 2s, visibility 2s, height 2s',
+                        }}></div>
                         <div className='emotions'>
                           <div className='loadbox'>
                             <form>
                               <div className="buttonx">
                                 <input type="radio" value="Generic" checked={selectedVal == "Generic"} disabled={loading || !emotionCaption} id="a21" name="check-substitution-2" onChange={handleOptionChange} />
-                                <label className={`btn btn-default`} for="a21">💻 Generic</label>
+                                <label className={`btn btn-default`} htmlFor="a21">💻 Generic</label>
                               </div>
 
                               <div className="buttonx">
                                 <input type="radio" value="Serious" checked={selectedVal == "Serious"} disabled={loading || !emotionCaption} id="a25" name="check-substitution-2" onChange={handleOptionChange} />
-                                <label className={`btn btn-default`} for="a25">&#128528; Serious</label>
+                                <label className={`btn btn-default`} htmlFor="a25">&#128528; Serious</label>
                               </div>
 
                               <div className="buttonx">
                                 <input type="radio" value="Cool" checked={selectedVal == "Cool"} disabled={loading || !emotionCaption} id="a50" name="check-substitution-2" onChange={handleOptionChange} />
-                                <label className={`btn btn-default`} for="a50">&#x1F60E; Cool</label>
+                                <label className={`btn btn-default`} htmlFor="a50">&#x1F60E; Cool</label>
                               </div>
 
                               <div className="buttonx">
                                 <input type="radio" value="Funny" checked={selectedVal == "Funny"} disabled={loading || !emotionCaption} id="a75" name="check-substitution-2" onChange={handleOptionChange} />
-                                <label className={`btn btn-default`} for="a75">&#128514; Funny</label>
+                                <label className={`btn btn-default`} htmlFor="a75">&#128514; Funny</label>
                               </div>
 
                               <div className="buttonx">
                                 <input type="radio" value="Informative" checked={selectedVal == "Informative"} disabled={loading || !emotionCaption} id="a76" name="check-substitution-2" onChange={handleOptionChange} />
-                                <label className={`btn btn-default`} for="a76">📄 Informative</label>
+                                <label className={`btn btn-default`} htmlFor="a76">📄 Informative</label>
                               </div>
 
                               <div className="buttonx">
                                 <input type="radio" value="Ecstatic" checked={selectedVal == "Ecstatic"} disabled={loading || !emotionCaption} id="a77" name="check-substitution-2" onChange={handleOptionChange} />
-                                <label className={`btn btn-default`} for="a77">🙌🏻 Ecstatic</label>
+                                <label className={`btn btn-default`} htmlFor="a77">🙌🏻 Ecstatic</label>
                               </div>
 
                               <div className="buttonx">
                                 <input type="radio" value="Controversial" checked={selectedVal == "Controversial"} disabled={loading || !emotionCaption} id="a80" name="check-substitution-2" onChange={handleOptionChange} />
-                                <label className={`btn btn-default`} for="a80">😲 Controversial</label>
+                                <label className={`btn btn-default`} htmlFor="a80">😲 Controversial</label>
                               </div>
 
                             </form>
@@ -313,7 +334,7 @@ export default function Home() {
                               {
                                 (_.isEmpty(captions) && !loading) && <div className="row">
                                   <div className="col-12">
-                                    <span className="box">Please upload image for generating captions......</span>
+                                    <span className="box">Please upload image htmlFor generating captions......</span>
                                   </div>
                                 </div>
                               }

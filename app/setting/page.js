@@ -131,10 +131,10 @@ export default function Dashboard() {
     return (
         <main>
             <ToastContainer />
-            <div class="text-center">
-                <button type="button" class="btn btn-primary m-3" style={{ padding: "10px 50px" }} disabled={loading || start} onClick={handleStartClick}>Start</button>
-                <button type="button" class="btn btn-primary m-3" style={{ padding: "10px 50px" }} disabled={loading || !start} onClick={handleStopClick}>Stop</button>
-                <button type="button" class="btn btn-primary m-3" style={{ padding: "10px 50px" }} disabled={loading} onClick={() => { router.push("/") }}>Back</button>
+            <div className="text-center">
+                <button type="button" className="btn btn-primary m-3" style={{ padding: "10px 50px" }} disabled={loading || start} onClick={handleStartClick}>Start</button>
+                <button type="button" className="btn btn-primary m-3" style={{ padding: "10px 50px" }} disabled={loading || !start} onClick={handleStopClick}>Stop</button> <br></br>
+                <button type="button" className="btn btn-primary m-3" style={{ padding: "10px 50px" }} disabled={loading} onClick={() => { router.push("/") }}>Let&apos;s Start the Demo</button>
             </div>
         </main>
     );
