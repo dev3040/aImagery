@@ -29,8 +29,7 @@ export const getEmotionCaption = (body) => {
     return axios.post(Emotion(), body);
 }
 
-export const login = (body) => {
-    console.log('body: ', body);
+export const login = (body) => { 
     return axios.post(Login(), body,
         {
             headers: {
