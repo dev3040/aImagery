@@ -6,6 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/navigation'
 import { checkServer } from '../services/caption.service';
+import nextConfig from "@/next.config";
 
 export default function Dashboard() {
     const router = useRouter();
@@ -49,14 +50,14 @@ export default function Dashboard() {
                 return;
             }
 
-            const response = await fetch('http://aimageryapi.project-demo.info:3004/v1/google/startInstance', {
+            const response = await fetch(`${nextConfig.BACKEND_URL}/google/startInstance`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token.access.token}`, // Add the token to the Authorization header
                 },
             });
-            
+
             if (response.ok) {
                 console.log('response: ', response);
                 // const successResponse = await response.json();
@@ -104,7 +105,7 @@ export default function Dashboard() {
                 console.error('Bearer token not found in local storage');
                 return;
             }
-            const response = await fetch('http://aimageryapi.project-demo.info:3004/v1/google/stopInstance', {
+            const response = await fetch(`${nextConfig.BACKEND_URL}/google/stopInstance`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
