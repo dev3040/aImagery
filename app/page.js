@@ -216,6 +216,11 @@ export default function Home() {
                           <p>We are currently processing your image...</p>
                           <p>You can also generate caption with emotions</p>
                           <p>Take a breath we are close enough...</p>
+                          <p>It won&apos;t be much longer...</p>
+                          <p>We&apos;re making progress, stay tuned...</p>
+                          <p>Your image is in good hands...</p>
+                          <p>Hang tight while we do the heavy lifting...</p>
+                          <p>Hold on for just a moment...</p>
                         </div>
                       </div>
                     </div>

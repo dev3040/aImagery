@@ -752,7 +752,7 @@ section:nth-child(3) {
 }
 
 .scroller .inner {
-  animation: 10s alternate infinite running scroll;
+  animation: 15s alternate infinite running scroll;
 }
 
 @keyframes scroll {
@@ -761,34 +761,34 @@ section:nth-child(3) {
   }
 
   15% {
-    margin-top: 0px;
+    margin-top: -70px;
   }
 
   25% {
-    margin-top: -70pt;
+    margin-top: -140pt;
   }
 
   40% {
-    margin-top: -70pt;
+    margin-top: -210pt;
   }
 
   50% {
-    margin-top: -140pt;
+    margin-top: -280pt;
   }
 
   65% {
-    margin-top: -140pt;
+    margin-top: -350pt;
   }
 
   75% {
-    margin-top: -210pt;
+    margin-top: -420pt;
   }
 
   90% {
-    margin-top: -210pt;
+    margin-top: -490pt;
   }
 
   100% {
-    margin-top: -210pt;
+    margin-top: -560pt;
   }
 }
