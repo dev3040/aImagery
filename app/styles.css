@@ -752,7 +752,7 @@ section:nth-child(3) {
 }
 
 .scroller .inner {
-  animation: 10s normal infinite running scroll;
+  animation: 10s alternate infinite running scroll;
 }
 
 @keyframes scroll {
@@ -789,6 +789,6 @@ section:nth-child(3) {
   }
 
   100% {
-    margin-top: 0px;
+    margin-top: -210pt;
   }
 }
