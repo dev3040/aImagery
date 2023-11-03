@@ -58,10 +58,10 @@ export default function Dashboard() {
                 },
             });
 
+            const toastId = toast.info("Server will start in 10 min", { autoClose: false, isLoading: true, closeButton: false, closeOnClick: false });
             if (response.ok) {
                 console.log('response: ', response);
                 // const successResponse = await response.json();
-                const toastId = toast.info("Server will start in 10 min", { autoClose: false, isLoading: true, closeButton: false, closeOnClick: false });
                 // console.log('response', successResponse);
                 setTimeout(() => {
                     toast.update(toastId, {
@@ -114,11 +114,18 @@ export default function Dashboard() {
             });
 
             if (response.ok) {
-                setLoading(false)
-                setStart(false)
-                // const successResponse = await response.json();
-                // console.log("response", successResponse);
-                toast.success("Server Stoped")
+                const toastId = toast.info("Server is Stopping please wait for 3 mins", { autoClose: false, isLoading: true, closeButton: false, closeOnClick: false });
+                // console.log('response', successResponse);
+                setTimeout(() => {
+                    toast.update(toastId, {
+                        render: "Server Stoped!",
+                        type: toast.TYPE.SUCCESS,
+                        isLoading: false,
+                        autoClose: true
+                    })
+                    setLoading(false)
+                    setStart(false)
+                }, 180000);
             } else {
                 setLoading(false)
                 toast.error("Server error")
