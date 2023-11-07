@@ -339,7 +339,7 @@ export default function Home() {
                               {
                                 (_.isEmpty(captions) && !loading) && <div className="row">
                                   <div className="col-12">
-                                    <span className="box">Please upload image htmlFor generating captions......</span>
+                                    <span className="box">Please upload image generating captions......</span>
                                   </div>
                                 </div>
                               }
