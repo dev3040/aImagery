@@ -28,7 +28,6 @@ export default function Dashboard() {
             setStart(true)
             setLoading(false)
         }).catch(error => {
-            console.log('toastId: ', toastId);
             toast.update(toastId, {
                 render: "Please start the server!",
                 type: toast.TYPE.ERROR,
@@ -60,7 +59,6 @@ export default function Dashboard() {
 
             const toastId = toast.info("Server will start in 10 min", { autoClose: false, isLoading: true, closeButton: false, closeOnClick: false });
             if (response.ok) {
-                console.log('response: ', response);
                 // const successResponse = await response.json();
                 // console.log('response', successResponse);
                 setTimeout(() => {
@@ -85,7 +83,6 @@ export default function Dashboard() {
             }
         } catch (error) {
             setLoading(false)
-            console.log('error: ', error);
             toast.update(toastId, {
                 render: "Server error!",
                 type: toast.TYPE.ERROR,
