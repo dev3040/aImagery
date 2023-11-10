@@ -1,6 +1,7 @@
 import axios from "axios";
 import { CheckServer, Emotion, GetCaption, Login, SignUp, ValidateUser } from "./config/api";
 import _ from "lodash";
+import nextConfig from "@/next.config";
 
 export const checkServer = () => {
     return axios.get(CheckServer())
@@ -29,7 +30,7 @@ export const getEmotionCaption = (body) => {
     return axios.post(Emotion(), body);
 }
 
-export const login = (body) => { 
+export const login = (body) => {
     return axios.post(Login(), body,
         {
             headers: {
@@ -70,6 +71,15 @@ export const validateUser = async () => {
     return axios.get(ValidateUser(userDetails?.user.id), {
         headers: {
             ...getHeader()
+        }
+    })
+}
+
+export const regenerateCaption = (image) => {
+    return axios.post(`${nextConfig.API_URL}/recheckCaption`, image, {
+        headers: {
+            ...getHeader(),
+            "Content-Type": "multipart/form-data"
         }
     })
 }

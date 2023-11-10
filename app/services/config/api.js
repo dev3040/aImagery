@@ -16,3 +16,7 @@ export const Emotion = () =>
 
 export const CheckServer = () =>
   `${nextConfig.API_URL}`
+
+export const RegenerateCaption = () => {
+  `${nextConfig.API_URL}/recheckCaption`
+}

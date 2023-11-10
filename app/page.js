@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import './styles.css'
-import { checkServer, getCaption, getEmotionCaption, logout, validateUser } from './services/caption.service';
+import { checkServer, getCaption, getEmotionCaption, logout, regenerateCaption, validateUser } from './services/caption.service';
 import _ from "lodash"
 import { usePathname, useRouter } from 'next/navigation'
 import { ToastContainer, toast } from 'react-toastify';
@@ -55,8 +55,25 @@ export default function Home() {
   };
 
   const handleRefresh = () => {
-    // setLoading(true)
-  }
+    const formData = new FormData();
+    console.log("Imagee", selectedImage);
+    formData.append("file", selectedImage);
+    setLoading(true);
+    regenerateCaption(formData)
+      .then((response) => {
+        setEmotionCaption(response.data["image-description"]);
+        console.log('ressponse', response.data.caption)
+        setCaptions(response.data.caption);
+        setGenericCaption(response.data.caption);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setSelectedImage(null);
+        toast.error(error.message || "Something wents wrong!");
+        setLoading(false);
+      });
+    setCaptions(null);
+  };
 
   const handleChange = event => {
     const fileInput = event.target;
@@ -290,7 +307,16 @@ export default function Home() {
                           <div className="card-header caption-header">
                             <div style={{ color: "white" }}>Captions</div>
                             <div>
-                              <span className='icon' disabled={loading} onClick={handleRefresh}><LuRefreshCcw className={`icon ${loading ? 'refresh-start' : ''}`} /></span>
+                              <button
+                                className="icon"
+                                disabled={loading}
+                                onClick={handleRefresh}
+                              >
+                                <LuRefreshCcw
+                                  className={`icon ${loading ? "refresh-start" : ""
+                                    }`}
+                                />
+                              </button>
                             </div>
                           </div>
                           <div className="card-body">

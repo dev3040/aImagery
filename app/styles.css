@@ -462,6 +462,9 @@ section:nth-child(3) {
 
 .icon {
   font-size: 17px;
+  background: #101010;
+  color: white;
+  border: 0;
 }
 
 .icon:hover {
