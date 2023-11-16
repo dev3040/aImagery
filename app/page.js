@@ -309,7 +309,7 @@ export default function Home() {
                             <div>
                               <button
                                 className="icon"
-                                disabled={loading}
+                                disabled={loading || _.isEmpty(selectedImage)}
                                 onClick={handleRefresh}
                               >
                                 <LuRefreshCcw
