@@ -768,3 +768,14 @@ section:nth-child(3) {
     transform: translateY(-100%);
   }
 }
+
+
+.custom-text {
+  width: 100%;
+  margin: 10px 0px;
+  border: none;
+  background: #101010;
+  color: white;
+  outline: none;
+  border-bottom: 1px solid #bb86fc;
+}

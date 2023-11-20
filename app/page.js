@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import './styles.css'
-import { checkServer, getCaption, getEmotionCaption, logout, regenerateCaption, validateUser } from './services/caption.service';
+import { captionPromt, checkServer, getCaption, getEmotionCaption, logout, regenerateCaption, validateUser } from './services/caption.service';
 import _ from "lodash"
 import { usePathname, useRouter } from 'next/navigation'
 import { ToastContainer, toast } from 'react-toastify';
@@ -10,6 +10,7 @@ import { LuRefreshCcw, LuLayoutDashboard, LuLayers, LuSettings2, LuLogOut } from
 import { RxExit } from 'react-icons/rx';
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link';
+import { useFormik } from 'formik';
 
 export default function Home() {
   const hiddenFileInput = useRef(null);
@@ -22,7 +23,8 @@ export default function Home() {
   const router = useRouter();
   const searchParams = useSearchParams()
   const mode = searchParams.get('mode')
-  const pathname = usePathname()
+  const [promtCaption, setPromtCaption] = useState(null);
+
   useEffect(() => {
     setLoading(true)
     validateUser().then(res => {
@@ -73,12 +75,14 @@ export default function Home() {
         setLoading(false);
       });
     setCaptions(null);
+    setPromtCaption(null);
   };
 
   const handleChange = event => {
     const fileInput = event.target;
     setSelectedVal("Generic")
     if (event.target.files && event.target.files[0]) {
+      console.log('event.target.files[0]: ', event.target.files[0]);
       setSelectedImage(event.target.files[0]);
       const formData = new FormData();
       formData.append("file", event.target.files[0]);
@@ -105,11 +109,12 @@ export default function Home() {
 
   const handleOptionChange = (changeEvent) => {
     setSelectedVal(changeEvent.target.value)
+    console.log('changeEvent.target.value: ', changeEvent.target.value);
     const payload = {
       image_description: emotionCaption,
       emotion: changeEvent.target.value
     }
-    if (changeEvent.target.value == "Generic") {
+    if (changeEvent.target.value == "Generic" || changeEvent.target.value == "Custom") {
       setCaptions(genericCaption)
     } else {
       setLoading(true)
@@ -124,6 +129,22 @@ export default function Home() {
         });
     }
   }
+
+  const formik = useFormik({
+    initialValues: {
+      prompt: '',
+    },
+    onSubmit: async values => {
+      setLoading(true)
+      captionPromt(values).then(res => {
+        setLoading(false)
+        setPromtCaption(res.data.message)
+      }).catch((error) => {
+        toast.error(error.message || "Something wents wrong!")
+        setLoading(false);
+      });
+    },
+  });
 
 
   return (
@@ -288,14 +309,19 @@ export default function Home() {
                                 <label className={`btn btn-default`} htmlFor="a76">📄 Informative</label>
                               </div>
 
-                              <div className="buttonx">
+                              {/* <div className="buttonx">
                                 <input type="radio" value="Ecstatic" checked={selectedVal == "Ecstatic"} disabled={loading || !emotionCaption} id="a77" name="check-substitution-2" onChange={handleOptionChange} />
                                 <label className={`btn btn-default`} htmlFor="a77">🙌🏻 Ecstatic</label>
-                              </div>
+                              </div> */}
 
                               <div className="buttonx">
                                 <input type="radio" value="Controversial" checked={selectedVal == "Controversial"} disabled={loading || !emotionCaption} id="a80" name="check-substitution-2" onChange={handleOptionChange} />
                                 <label className={`btn btn-default`} htmlFor="a80">😲 Controversial</label>
+                              </div>
+
+                              <div className="buttonx">
+                                <input type="radio" value="Custom" checked={selectedVal == "Custom"} disabled={loading || !emotionCaption} id="a89" name="check-substitution-2" onChange={handleOptionChange} />
+                                <label className={`btn btn-default`} htmlFor="a89">💬 Custom</label>
                               </div>
 
                             </form>
@@ -309,7 +335,7 @@ export default function Home() {
                             <div>
                               <button
                                 className="icon"
-                                disabled={loading || _.isEmpty(selectedImage)}
+                                disabled={loading || _.isEmpty(captions)}
                                 onClick={handleRefresh}
                               >
                                 <LuRefreshCcw
@@ -324,27 +350,19 @@ export default function Home() {
                               {
                                 (!loading && !_.isEmpty(captions)) && <div className="row">
                                   <div className="col-12" style={{ whiteSpace: "pre-wrap" }}>
+                                    {
+                                      (selectedVal == "Custom" && _.isEmpty(promtCaption)) &&
+                                      <form onSubmit={formik.handleSubmit}>
+                                        <input className='custom-text' placeholder='Add your promt here' type='text' name='prompt' id='prompt' onChange={formik.handleChange} />
+                                        <span className="box">Please enter text for generating captions......</span>
+                                      </form>
+                                    }
                                     <div className={`${captions && mode == "ppt" ? 'typewriter2' : 'typewriter'}  monospace big-caret lorem`}>
                                       <p>
-                                        {captions}
+                                        {selectedVal == "Custom" ? promtCaption : captions}
                                       </p>
                                     </div>
                                   </div>
-                                  {/* <div className="col-1">
-                          <span>1</span>
-                        </div>
-                        <div className="col-10">
-                          <div className='typewriter monospace big-caret lorem'>
-                            <p>This will be some caption and here we will show,
-                              This will be some caption and here we will show,
-                              This will be some caption and here we will show
-                              This will be some caption and here we will show
-                            </p>
-                          </div>
-                        </div>
-                        <div className="col-1">
-                          <span className='icon'><i data-feather="copy"></i></span>
-                        </div> */}
                                 </div>
                               }
                               {
@@ -356,7 +374,6 @@ export default function Home() {
                                         <div className="line line-2"></div>
                                         <div className="line line-3"></div>
                                       </div>
-
                                       <div className="loading-text">LOADING</div>
                                     </div>
                                   </div>

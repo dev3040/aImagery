@@ -83,3 +83,13 @@ export const regenerateCaption = (image) => {
         }
     })
 }
+
+export const captionPromt = (text) => {
+    console.log('text: ', text);
+    return axios.post(`${nextConfig.PROMP_URL}/prompt`, text, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+}
+
