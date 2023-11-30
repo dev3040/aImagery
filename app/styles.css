@@ -779,3 +779,56 @@ section:nth-child(3) {
   outline: none;
   border-bottom: 1px solid #bb86fc;
 }
+
+#radios label {
+  cursor: pointer;
+  position: relative;
+}
+
+#radios label+label {
+  margin-left: 15px;
+}
+
+#radios input[type="radio"] {
+  opacity: 0;
+  /* hidden but still tabable */
+  position: absolute;
+}
+
+#radios input[type="radio"]+span {
+  font-family: 'Material Icons';
+  color: #ffffff;
+  border-radius: 50%;
+  padding: 8px 12px 12px 12px;
+  transition: all 0.4s;
+  -webkit-transition: all 0.4s;
+}
+
+#radios input[type="radio"]:checked+span {
+  color: #D9E7FD;
+  background-color: #8732f4;
+}
+
+#radios input[type="radio"]:focus+span {
+  color: #fff;
+}
+
+/* ================ TOOLTIPS ================= */
+
+#radios label:hover::before {
+  content: attr(for);
+  font-family: Roboto, -apple-system, sans-serif;
+  text-transform: capitalize;
+  font-size: 11px;
+  position: absolute;
+  top: 170%;
+  left: 0;
+  right: 0;
+  opacity: 0.75;
+  background-color: #323232;
+  color: #fff;
+  padding: 4px;
+  border-radius: 3px;
+  display: block;
+  text-align: center;
+}

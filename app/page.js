@@ -1,16 +1,19 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import './styles.css'
-import { captionPromt, checkServer, getCaption, getEmotionCaption, logout, regenerateCaption, validateUser } from './services/caption.service';
+import { captionPromt, checkServer, getCaption, getEmotionCaption, logout, regenerateCaption, storeData, validateUser } from './services/caption.service';
 import _ from "lodash"
 import { usePathname, useRouter } from 'next/navigation'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { LuRefreshCcw, LuLayoutDashboard, LuLayers, LuSettings2, LuLogOut } from 'react-icons/lu';
+import { IoIosChatbubbles } from "react-icons/io";
 import { RxExit } from 'react-icons/rx';
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link';
 import { useFormik } from 'formik';
+import { MdOutlineThumbDownOffAlt, MdOutlineThumbUp } from "react-icons/md";
+import ChatPopup from '@/components/ChatPopup';
 
 export default function Home() {
   const hiddenFileInput = useRef(null);
@@ -20,11 +23,12 @@ export default function Home() {
   const [emotionCaption, setEmotionCaption] = useState("");
   const [genericCaption, setGenericCaption] = useState("");
   const [selectedVal, setSelectedVal] = useState("Generic");
+  const [isChatOpen, setIsChatOpen] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams()
   const mode = searchParams.get('mode')
-  const [promtCaption, setPromtCaption] = useState(null);
-
+  // const [promtCaption, setPromtCaption] = useState(null);
+  const [feedBack, setFeedBack] = useState(null);
   useEffect(() => {
     setLoading(true)
     validateUser().then(res => {
@@ -75,7 +79,8 @@ export default function Home() {
         setLoading(false);
       });
     setCaptions(null);
-    setPromtCaption(null);
+    setFeedBack(null);
+    // setPromtCaption(null);
   };
 
   const handleChange = event => {
@@ -103,7 +108,8 @@ export default function Home() {
           setLoading(false);
         });
       fileInput.value = "";
-      setCaptions(null)
+      setCaptions(null);
+      setFeedBack(null);
     }
   };
 
@@ -130,26 +136,55 @@ export default function Home() {
     }
   }
 
-  const formik = useFormik({
-    initialValues: {
-      prompt: '',
-    },
-    onSubmit: async values => {
-      setLoading(true)
-      captionPromt(values).then(res => {
-        setLoading(false)
-        setPromtCaption(res.data.message)
-      }).catch((error) => {
-        toast.error(error.message || "Something wents wrong!")
-        setLoading(false);
-      });
-    },
-  });
+  const handleLike = (event) => {
+    if (event.target.value == "Yes") {
+      setFeedBack("Yes")
+      const formData = new FormData();
+      console.log('selectedImage: ', selectedImage);
+      formData.append("files", selectedImage);
+      formData.append("caption", captions);
+      storeData(formData).then((res) => {
+        toast.success("Thanks for feedback!")
+      })
+        .catch((error) => {
+          console.log('error: ', error);
+          toast.error(error.message || "Something wents wrong!")
+          setLoading(false);
+        });
+    } else {
+      console.log("here");
+      setFeedBack("No")
+      handleRefresh();
+    }
+    console.log("feedBack:", feedBack);
+  }
+
+  const handleClick = () => {
+    setIsChatOpen(!isChatOpen);
+  }
+
+
+  // const formik = useFormik({
+  //   initialValues: {
+  //     prompt: '',
+  //   },
+  //   onSubmit: async values => {
+  //     setLoading(true)
+  //     captionPromt(values).then(res => {
+  //       setLoading(false)
+  //       setPromtCaption(res.data.message)
+  //     }).catch((error) => {
+  //       toast.error(error.message || "Something wents wrong!")
+  //       setLoading(false);
+  //     });
+  //   },
+  // });
 
 
   return (
     <main className='body-main'>
       <ToastContainer />
+      <ChatPopup isOpen={isChatOpen} onClose={handleClick} />
       <header className="header" id="header">
         <div className="header_toggle">
           {/* <span style={{ color: "white" }} id="header-toggle"><i data-feather="menu"></i></span> */}
@@ -226,8 +261,8 @@ export default function Home() {
               }}>
                 <div className="clipped" style={{
                   background: `url(${selectedImage ? URL.createObjectURL(selectedImage) : "https://s27363.pcdn.co/wp-content/uploads/2020/05/Best-Things-to-do-in-London-1200x900.jpg.optimal.jpg"})`,
-                  backgroundRepeat: "no-repeat !important",
-                  backgroundSize: "cover",
+                  // backgroundRepeat: "no-repeat !important",
+                  // backgroundSize: "cover",
                   // filter: loading && !captions ? 'blur(5px)' : 'none',
                   height: captions && mode == "ppt" && (!loading || (loading && captions)) ? "0" : '50vh',
                   margin: mode == "ppt" ? "0% 0%" : 'none',
@@ -274,8 +309,8 @@ export default function Home() {
                           visibility: mode == "ppt" && captions && mode == "ppt" && (!loading || (loading && captions)) ? "visible" : "hidden",
                           opacity: mode == "ppt" && captions && mode == "ppt" && (!loading || (loading && captions)) ? "1" : "0",
                           background: `url(${selectedImage ? URL.createObjectURL(selectedImage) : "https://s27363.pcdn.co/wp-content/uploads/2020/05/Best-Things-to-do-in-London-1200x900.jpg.optimal.jpg"})`,
-                          backgroundRepeat: "no-repeat !important",
-                          backgroundSize: "cover",
+                          // backgroundRepeat: "no-repeat !important",
+                          // backgroundSize: "cover",
                           height: mode == "ppt" && captions && mode == "ppt" && (!loading || (loading && captions)) ? "15vh" : 0,
                           width: mode == "ppt" && captions && mode == "ppt" && (!loading || (loading && captions)) ? "90%" : 0,
                           marginLeft: "10px",
@@ -309,20 +344,20 @@ export default function Home() {
                                 <label className={`btn btn-default`} htmlFor="a76">📄 Informative</label>
                               </div>
 
-                              {/* <div className="buttonx">
+                              <div className="buttonx">
                                 <input type="radio" value="Ecstatic" checked={selectedVal == "Ecstatic"} disabled={loading || !emotionCaption} id="a77" name="check-substitution-2" onChange={handleOptionChange} />
                                 <label className={`btn btn-default`} htmlFor="a77">🙌🏻 Ecstatic</label>
-                              </div> */}
+                              </div>
 
                               <div className="buttonx">
                                 <input type="radio" value="Controversial" checked={selectedVal == "Controversial"} disabled={loading || !emotionCaption} id="a80" name="check-substitution-2" onChange={handleOptionChange} />
                                 <label className={`btn btn-default`} htmlFor="a80">😲 Controversial</label>
                               </div>
 
-                              <div className="buttonx">
+                              {/* <div className="buttonx">
                                 <input type="radio" value="Custom" checked={selectedVal == "Custom"} disabled={loading || !emotionCaption} id="a89" name="check-substitution-2" onChange={handleOptionChange} />
                                 <label className={`btn btn-default`} htmlFor="a89">💬 Custom</label>
-                              </div>
+                              </div> */}
 
                             </form>
                           </div>
@@ -335,12 +370,11 @@ export default function Home() {
                             <div>
                               <button
                                 className="icon"
-                                disabled={loading || _.isEmpty(captions)}
-                                onClick={handleRefresh}
+                                // disabled={loading || _.isEmpty(captions)}
+                                onClick={handleClick}
                               >
-                                <LuRefreshCcw
-                                  className={`icon ${loading ? "refresh-start" : ""
-                                    }`}
+                                <IoIosChatbubbles
+                                  className="icon"
                                 />
                               </button>
                             </div>
@@ -350,17 +384,33 @@ export default function Home() {
                               {
                                 (!loading && !_.isEmpty(captions)) && <div className="row">
                                   <div className="col-12" style={{ whiteSpace: "pre-wrap" }}>
-                                    {
+                                    {/* {
                                       (selectedVal == "Custom" && _.isEmpty(promtCaption)) &&
                                       <form onSubmit={formik.handleSubmit}>
                                         <input className='custom-text' placeholder='Add your promt here' type='text' name='prompt' id='prompt' onChange={formik.handleChange} />
                                         <span className="box">Please enter text for generating captions......</span>
                                       </form>
-                                    }
+                                    } */}
                                     <div className={`${captions && mode == "ppt" ? 'typewriter2' : 'typewriter'}  monospace big-caret lorem`}>
                                       <p>
-                                        {selectedVal == "Custom" ? promtCaption : captions}
+                                        {captions} <br></br><br></br>
+                                        {feedBack ? 'Thanks for giving your response' : 'Are you satisfied with this caption?'}
+
                                       </p>
+                                      {(_.isEmpty(feedBack) &&
+                                        <div id="radios">
+                                          <label htmlFor="Yes" className="material-icons">
+                                            <input type="radio" name="mode" id="Yes" value="Yes" onChange={handleLike} />
+                                            <span><MdOutlineThumbUp /></span>
+                                          </label>
+                                          <label htmlFor="No" className="material-icons">
+                                            <input type="radio" name="mode" id="No" value="No" onChange={handleLike} />
+                                            <span><MdOutlineThumbDownOffAlt /></span>
+                                          </label>
+                                        </div>
+                                      )}
+                                      <br></br>
+                                      <br></br>
                                     </div>
                                   </div>
                                 </div>

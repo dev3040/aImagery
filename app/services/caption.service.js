@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CheckServer, Emotion, GetCaption, Login, SignUp, ValidateUser } from "./config/api";
+import { CheckServer, Emotion, GetCaption, Login, SignUp, ValidateUser, StoreData } from "./config/api";
 import _ from "lodash";
 import nextConfig from "@/next.config";
 
@@ -89,6 +89,17 @@ export const captionPromt = (text) => {
     return axios.post(`${nextConfig.PROMP_URL}/prompt`, text, {
         headers: {
             'Content-Type': 'application/json'
+        }
+    })
+}
+
+export const storeData = (body) => {
+    console.log('body: ', body);
+    // ${nextConfig.BACKEND_URL}/retraining/store-data
+    return axios.post(`${nextConfig.BACKEND_URL}/retraining/store-data`, body, {
+        headers: {
+            ...getHeader(),
+            "Content-Type": "multipart/form-data"
         }
     })
 }

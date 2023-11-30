@@ -20,3 +20,7 @@ export const CheckServer = () =>
 export const RegenerateCaption = () => {
   `${nextConfig.API_URL}/recheckCaption`
 }
+
+export const StoreData = () => {
+  `${nextConfig.API_URL}/retraining/store-data`
+}
