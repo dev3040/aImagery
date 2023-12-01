@@ -86,7 +86,9 @@ export const regenerateCaption = (image) => {
 
 export const captionPromt = (text) => {
     console.log('text: ', text);
-    return axios.post(`${nextConfig.PROMP_URL}/prompt`, text, {
+    return axios.post(`${nextConfig.PROMP_URL}/prompt`, {
+        prompt: text
+    }, {
         headers: {
             'Content-Type': 'application/json'
         }
