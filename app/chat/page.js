@@ -22,6 +22,7 @@ import Link from "next/link";
 import ChatPopup from "@/components/ChatPopup";
 import ChatMessage from "@/components/ChatMessage";
 import ChatMessageReverse from "@/components/ChatMessageReverse";
+import ChatLoading from "@/components/ChatLoading";
 
 const page = () => {
   const [text, setText] = useState('')
@@ -63,10 +64,12 @@ const page = () => {
   }, []);
   const sendMessage = () => {
     setMessages(current => [...current, {messages: text, type: 'send'}])
+    setLoading(true)
     captionPromt(text)
       .then((res) => {
         setLoading(false);
         setMessages(current => [...current, {messages: res.data, type: 'receive'}]);
+        setText('')
       })
       .catch((error) => {
         toast.error(error.message || "Something wents wrong!");
@@ -182,6 +185,7 @@ const page = () => {
                   : "40px",
             }}
           >
+            
             <div class="--dark-theme" id="chat">
               <div className="chat__conversation-board">
                 {messages.map((x, index) => (
@@ -193,6 +197,7 @@ const page = () => {
                     )}
                   </React.Fragment>
                 ))}
+                {loading ? <ChatLoading/>: <></>}
               </div>
               <div class="chat__conversation-panel">
                 <div class="chat__conversation-panel__container">

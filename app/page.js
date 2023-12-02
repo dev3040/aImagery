@@ -18,8 +18,10 @@ import {
   LuLayoutDashboard,
   LuLayers,
   LuSettings2,
+  LuSubtitles,
   LuLogOut,
 } from "react-icons/lu";
+
 import { RxExit } from "react-icons/rx";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
@@ -170,6 +172,11 @@ export default function Home() {
               <Link href="/setting" className="nav_link">
                 <span style={{ color: "white" }}>
                   <LuSettings2 style={{ fontSize: "20px" }} />
+                </span>
+              </Link>
+              <Link href="/chat" className="nav_link">
+                <span style={{ color: "white" }}>
+                  <LuSubtitles style={{ fontSize: "20px" }} />
                 </span>
               </Link>
               <Link
