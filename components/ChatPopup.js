@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import '../styles/ChatPopup.css';
 import _ from 'lodash';
 import { captionPromt } from '@/app/services/caption.service';
-const ChatPopup = ({ isOpen, onClose, questions }) => {
+const ChatPopup = ({ isOpen, onClose, questions, queLoading }) => {
     const [inloading, setInloading] = useState(false);
     const [message, setMessage] = useState([]);
     const myDivRef = useRef(null);
@@ -60,50 +60,54 @@ const ChatPopup = ({ isOpen, onClose, questions }) => {
                 </span>
             </div>
             <div className="chat-body" ref={myDivRef}>
-                <div className="chat-message">
-                    {_.isEmpty(questions) ? (
-                        <div className="message-content-third">
-                            <p className="containerx">
-                                <span className="dot"></span>
-                                <span className="dot"></span>
-                                <span className="dot"></span>
-                            </p>
-                        </div>
-                    ) : (
-                        message.map((x, index) => (
-                            <React.Fragment key={index}>
-                                {x.type === "send" && x.isQue ? (
-                                    <div className="message-content-third">
-                                        <p className='pClick'
-                                            style={{ cursor: "pointer" }}
-                                            onClick={() => {
-                                                if (!inloading) {
-                                                    handleClick(x.message)
-                                                }
-                                            }}
-                                        >
-                                            {x.message}
-                                        </p>
-                                    </div>
-                                ) : (x.type === "send" ? (
-                                    <div className="message-content-third">
-                                        <p dangerouslySetInnerHTML={{ __html: x.message }}></p>
-                                    </div>
-                                ) :
-                                    (x.type == "loading" ?
-                                        (<div className="containerx">
-                                            <span className="dot"></span>
-                                            <span className="dot"></span>
-                                            <span className="dot"></span>
-                                        </div>) :
-                                        (<div className="message-content-sender">
-                                            <p>{x.message}</p>
-                                        </div>))
-                                )}
-                            </React.Fragment>
-                        ))
-                    )}
-                </div>
+                {queLoading ?
+                    <div className="message-content-third">
+                        <p className="containerx">
+                            <span className="dot"></span>
+                            <span className="dot"></span>
+                            <span className="dot"></span>
+                        </p>
+                    </div> :
+                    <div className="chat-message">
+                        {_.isEmpty(questions) ? (
+                            <div className="message-content-third">
+                                <p>Please upload the image before proceeding!</p>
+                            </div>
+                        ) : (
+                            message.map((x, index) => (
+                                <React.Fragment key={index}>
+                                    {x.type === "send" && x.isQue ? (
+                                        <div className="message-content-third">
+                                            <p className='pClick'
+                                                style={{ cursor: "pointer" }}
+                                                onClick={() => {
+                                                    if (!inloading) {
+                                                        handleClick(x.message)
+                                                    }
+                                                }}
+                                            >
+                                                {x.message}
+                                            </p>
+                                        </div>
+                                    ) : (x.type === "send" ? (
+                                        <div className="message-content-third">
+                                            <p dangerouslySetInnerHTML={{ __html: x.message }}></p>
+                                        </div>
+                                    ) :
+                                        (x.type == "loading" ?
+                                            (<div className="containerx">
+                                                <span className="dot"></span>
+                                                <span className="dot"></span>
+                                                <span className="dot"></span>
+                                            </div>) :
+                                            (<div className="message-content-sender">
+                                                <p>{x.message}</p>
+                                            </div>))
+                                    )}
+                                </React.Fragment>
+                            ))
+                        )}
+                    </div>}
             </div>
         </div>
     );

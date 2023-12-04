@@ -19,6 +19,7 @@ export default function Home() {
   const hiddenFileInput = useRef(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [queLoading, setQueLoading] = useState(false);
   const [captions, setCaptions] = useState(null);
   const [emotionCaption, setEmotionCaption] = useState("");
   const [genericCaption, setGenericCaption] = useState("");
@@ -88,11 +89,11 @@ export default function Home() {
     const fileInput = event.target;
     setSelectedVal("Generic")
     if (event.target.files && event.target.files[0]) {
-      console.log('event.target.files[0]: ', event.target.files[0]);
       setSelectedImage(event.target.files[0]);
       const formData = new FormData();
       formData.append("file", event.target.files[0]);
       setLoading(true)
+      setQueLoading(true)
       const radioButtons = document.querySelectorAll('input[type="radio"]');
       radioButtons.forEach(radioButton => {
         radioButton.checked = false;
@@ -103,9 +104,9 @@ export default function Home() {
         setGenericCaption(response.data.captions)
         setLoading(false)
         const getQue = await getQuestions({ caption: response.data["image-description"] })
-        console.log("QUE", getQue.data.questions);
         const refinedRes = extractQuestions(getQue.data.questions)
-        setQuestions(refinedRes)
+        setQuestions(refinedRes);
+        setQueLoading(false);
       })
         .catch((error) => {
           setSelectedImage(null)
@@ -199,7 +200,7 @@ export default function Home() {
   return (
     <main className='body-main'>
       <ToastContainer />
-      <ChatPopup questions={question} isOpen={isChatOpen} onClose={handleClick} />
+      <ChatPopup questions={question} queLoading={queLoading} isOpen={isChatOpen} onClose={handleClick} />
       <header className="header" id="header">
         <div className="header_toggle">
           {/* <span style={{ color: "white" }} id="header-toggle"><i data-feather="menu"></i></span> */}
