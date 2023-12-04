@@ -25,7 +25,7 @@ import ChatMessage from "@/components/ChatMessage";
 import ChatMessageReverse from "@/components/ChatMessageReverse";
 import ChatLoading from "@/components/ChatLoading";
 
-const page = () => {
+const Page = () => {
   const [text, setText] = useState('')
   const [loading, setLoading] = useState(false);
   const [captions, setCaptions] = useState(null);
@@ -286,4 +286,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
