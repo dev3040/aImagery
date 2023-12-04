@@ -15,6 +15,7 @@ import {
   LuLayoutDashboard,
   LuLayers,
   LuSettings2,
+  LuSubtitles,
 } from "react-icons/lu";
 import { RxExit } from "react-icons/rx";
 import { useSearchParams } from "next/navigation";
@@ -63,18 +64,19 @@ const page = () => {
       });
   }, []);
   const sendMessage = () => {
-    setMessages(current => [...current, {messages: text, type: 'send'}])
+    setText('')
+    setMessages(current => [...current, { messages: text, type: 'send' }])
     setLoading(true)
     captionPromt(text)
       .then((res) => {
         setLoading(false);
-        setMessages(current => [...current, {messages: res.data, type: 'receive'}]);
+        setMessages(current => [...current, { messages: res.data, type: 'receive' }]);
         setText('')
       })
       .catch((error) => {
         toast.error(error.message || "Something wents wrong!");
         setLoading(false);
-    });
+      });
   };
 
   const handleChange = (event) => {
@@ -108,9 +110,14 @@ const page = () => {
               <span className="nav_logo-name">Chat</span>
             </a>
             <div className="nav_list">
-              <Link href="/" className="nav_link active">
+              <Link href="/" className="nav_link">
                 <span style={{ color: "white" }}>
                   <LuLayoutDashboard style={{ fontSize: "20px" }} />
+                </span>
+              </Link>
+              <Link href="/chat" className="nav_link active">
+                <span style={{ color: "white" }}>
+                  <LuSubtitles style={{ fontSize: "20px" }} />
                 </span>
               </Link>
               <Link href="/setting" className="nav_link">
@@ -178,15 +185,15 @@ const page = () => {
               margin: mode == "ppt" ? "0" : "",
               padding:
                 mode == "ppt" &&
-                captions &&
-                mode == "ppt" &&
-                (!loading || (loading && captions))
+                  captions &&
+                  mode == "ppt" &&
+                  (!loading || (loading && captions))
                   ? "0px 40px"
                   : "40px",
             }}
           >
-            
-            <div class="--dark-theme" id="chat">
+
+            <div className="--dark-theme" id="chat">
               <div className="chat__conversation-board">
                 {messages.map((x, index) => (
                   <React.Fragment key={index}>
@@ -197,21 +204,21 @@ const page = () => {
                     )}
                   </React.Fragment>
                 ))}
-                {loading ? <ChatLoading/>: <></>}
+                {loading ? <ChatLoading /> : <></>}
               </div>
-              <div class="chat__conversation-panel">
-                <div class="chat__conversation-panel__container">
-                  <button class="chat__conversation-panel__button panel-item btn-icon add-file-button">
+              <div className="chat__conversation-panel">
+                <div className="chat__conversation-panel__container">
+                  {/* <button className="chat__conversation-panel__button panel-item btn-icon add-file-button">
                     <svg
-                      class="feather feather-plus sc-dnqmqq jxshSx"
+                      className="feather feather-plus sc-dnqmqq jxshSx"
                       xmlns="http://www.w3.org/2000/svg"
                       width="24"
                       height="24"
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
+                      strokeWidth="2"
+                      strokeLinecap="round"
                       stroke-linejoin="round"
                       aria-hidden="true"
                     >
@@ -219,17 +226,17 @@ const page = () => {
                       <line x1="5" y1="12" x2="19" y2="12"></line>
                     </svg>
                   </button>
-                  <button class="chat__conversation-panel__button panel-item btn-icon emoji-button">
+                  <button className="chat__conversation-panel__button panel-item btn-icon emoji-button">
                     <svg
-                      class="feather feather-smile sc-dnqmqq jxshSx"
+                      className="feather feather-smile sc-dnqmqq jxshSx"
                       xmlns="http://www.w3.org/2000/svg"
                       width="24"
                       height="24"
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
+                      strokeWidth="2"
+                      strokeLinecap="round"
                       stroke-linejoin="round"
                       aria-hidden="true"
                     >
@@ -238,15 +245,19 @@ const page = () => {
                       <line x1="9" y1="9" x2="9.01" y2="9"></line>
                       <line x1="15" y1="9" x2="15.01" y2="9"></line>
                     </svg>
-                  </button>
+                  </button> */}
                   <input
-                    class="chat__conversation-panel__input panel-item"
+                    className="chat__conversation-panel__input panel-item"
                     placeholder="Type a message..."
                     name="message"
                     onChange={handleChange}
                     value={text}
                   />
-                  <button class="chat__conversation-panel__button panel-item btn-icon send-message-button" onClick={sendMessage}>
+                  <button className="chat__conversation-panel__button panel-item btn-icon send-message-button" onClick={() => {
+                    if (!loading || !_.isEmpty(text)) {
+                      sendMessage()
+                    }
+                  }}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="24"
@@ -254,16 +265,16 @@ const page = () => {
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                       aria-hidden="true"
                       data-reactid="1036"
                     >
                       <line x1="22" y1="2" x2="11" y2="13"></line>
                       <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
                     </svg>
-                    
+
                   </button>
                 </div>
               </div>

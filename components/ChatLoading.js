@@ -1,11 +1,11 @@
 import React from "react";
-
+import "../styles/ChatLoading.css";
 const ChatLoading = () => {
   return (
-    <div class="container">
-      <span class="dot"></span>
-      <span class="dot"></span>
-      <span class="dot"></span>
+    <div className="container">
+      <span className="dot"></span>
+      <span className="dot"></span>
+      <span className="dot"></span>
     </div>
   );
 };

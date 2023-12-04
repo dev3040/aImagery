@@ -85,7 +85,6 @@ export const regenerateCaption = (image) => {
 }
 
 export const captionPromt = (text) => {
-    console.log('text: ', text);
     return axios.post(`${nextConfig.PROMP_URL}/prompt`, {
         prompt: text
     }, {
@@ -96,8 +95,6 @@ export const captionPromt = (text) => {
 }
 
 export const storeData = (body) => {
-    console.log('body: ', body);
-    // ${nextConfig.BACKEND_URL}/retraining/store-data
     return axios.post(`${nextConfig.BACKEND_URL}/retraining/store-data`, body, {
         headers: {
             ...getHeader(),
@@ -105,4 +102,13 @@ export const storeData = (body) => {
         }
     })
 }
+
+export const getQuestions = (body) => {
+    return axios.post(`${nextConfig.API_URL}/questions`, body, {
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+}
+
 
