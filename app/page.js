@@ -12,9 +12,8 @@ import { RxExit } from 'react-icons/rx';
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link';
 import { useFormik } from 'formik';
-import { MdOutlineThumbDownOffAlt, MdOutlineThumbUp } from "react-icons/md";
+import { MdOutlineThumbDownOffAlt, MdOutlineThumbUp, MdOutlineFeedback } from "react-icons/md";
 import ChatPopup from '@/components/ChatPopup';
-
 export default function Home() {
   const hiddenFileInput = useRef(null);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -33,29 +32,29 @@ export default function Home() {
   const [feedBack, setFeedBack] = useState(null);
   useEffect(() => {
     setLoading(true)
-    validateUser().then(res => {
-      if (!_.isEmpty(res)) {
-        checkServer().then(() => {
-          toast.success("Server Connected 😄!")
-          setLoading(false)
-        }).catch(error => {
-          toast.error("It seems like there's an issue with the server 😕")
-          setLoading(false)
-        })
-      } else {
-        toast.error("Something wrong!")
-        setLoading(false)
-        router.push("/login")
-        localStorage.clear();
-      }
-
+    // validateUser().then(res => {
+    // if (!_.isEmpty(res)) {
+    checkServer().then(() => {
+      toast.success("Server Connected 😄!")
+      setLoading(false)
+    }).catch(error => {
+      toast.error("It seems like there's an issue with the server 😕")
+      setLoading(false)
     })
-      .catch(error => {
-        toast.error("Something wrong!")
-        setLoading(false)
-        router.push("/login")
-        localStorage.clear();
-      })
+    // } else {
+    //   toast.error("Something wrong!")
+    //   setLoading(false)
+    //   router.push("/login")
+    //   localStorage.clear();
+    // }
+
+    // })
+    //   .catch(error => {
+    //     toast.error("Something wrong!")
+    //     setLoading(false)
+    //     router.push("/login")
+    //     localStorage.clear();
+    //   })
 
   }, [])
   const uploadImage = () => {
@@ -104,7 +103,7 @@ export default function Home() {
         setGenericCaption(response.data.captions)
         setLoading(false)
         const getQue = await getQuestions({ caption: response.data["image-description"] })
-        const refinedRes = extractQuestions(getQue.data.questions)
+        const refinedRes = extractQuestions(getQue.data)
         setQuestions(refinedRes);
         setQueLoading(false);
       })
@@ -131,7 +130,7 @@ export default function Home() {
     } else {
       setLoading(true)
       getEmotionCaption(payload).then((response) => {
-        setCaptions(response.data.emotion_caption)
+        setCaptions(response.data)
         setLoading(false)
       })
         .catch((error) => {
@@ -225,14 +224,17 @@ export default function Home() {
                   <LuSubtitles style={{ fontSize: "20px" }} />
                 </span>
               </Link>
-              <Link href="/setting" className="nav_link">
+              <a href="/feedback" className="nav_link">
+                <span style={{ color: "white" }}><MdOutlineFeedback style={{ fontSize: "20px" }} /></span>
+              </a>
+              {/* <Link href="/setting" className="nav_link">
                 <span style={{ color: "white" }}><LuSettings2 style={{ fontSize: "20px" }} /></span>
               </Link>
               <Link href="/login" onClick={() => {
                 localStorage.clear();
               }} className="nav_link">
                 <span style={{ color: "white" }}><RxExit style={{ fontSize: "20px" }} /></span>
-              </Link>
+              </Link> */}
             </div>
           </div>
           {/* <a className="nav_link" onClick={() => {
@@ -375,11 +377,6 @@ export default function Home() {
                                 <label className={`btn btn-default`} htmlFor="a80">😲 Controversial</label>
                               </div>
 
-                              {/* <div className="buttonx">
-                                <input type="radio" value="Custom" checked={selectedVal == "Custom"} disabled={loading || !emotionCaption} id="a89" name="check-substitution-2" onChange={handleOptionChange} />
-                                <label className={`btn btn-default`} htmlFor="a89">💬 Custom</label>
-                              </div> */}
-
                             </form>
                           </div>
                         </div>
@@ -391,7 +388,6 @@ export default function Home() {
                             <div>
                               <button
                                 className="icon"
-                                // disabled={loading || _.isEmpty(captions)}
                                 onClick={handleClick}
                               >
                                 <IoIosChatbubbles
@@ -405,13 +401,6 @@ export default function Home() {
                               {
                                 (!loading && !_.isEmpty(captions)) && <div className="row">
                                   <div className="col-12" style={{ whiteSpace: "pre-wrap" }}>
-                                    {/* {
-                                      (selectedVal == "Custom" && _.isEmpty(promtCaption)) &&
-                                      <form onSubmit={formik.handleSubmit}>
-                                        <input className='custom-text' placeholder='Add your promt here' type='text' name='prompt' id='prompt' onChange={formik.handleChange} />
-                                        <span className="box">Please enter text for generating captions......</span>
-                                      </form>
-                                    } */}
                                     <div className={`${captions && mode == "ppt" ? 'typewriter2' : 'typewriter'}  monospace big-caret lorem`}>
                                       <p>
                                         {captions} <br></br><br></br>

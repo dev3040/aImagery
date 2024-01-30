@@ -111,4 +111,12 @@ export const getQuestions = (body) => {
     })
 }
 
+export const contactUs = (body) => {
+    return axios.post(`${nextConfig.BACKEND_URL}/users/contact-us`, body, {
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+}
+
 

@@ -24,6 +24,7 @@ import ChatPopup from "@/components/ChatPopup";
 import ChatMessage from "@/components/ChatMessage";
 import ChatMessageReverse from "@/components/ChatMessageReverse";
 import ChatLoading from "@/components/ChatLoading";
+import { MdOutlineFeedback } from "react-icons/md";
 
 const Page = () => {
   const [text, setText] = useState('')
@@ -37,31 +38,31 @@ const Page = () => {
   const [messages, setMessages] = useState([])
   useEffect(() => {
     setLoading(true);
-    validateUser()
-      .then((res) => {
-        if (!_.isEmpty(res)) {
-          checkServer()
-            .then(() => {
-              toast.success("Server Connected 😄!");
-              setLoading(false);
-            })
-            .catch((error) => {
-              toast.error("It seems like there's an issue with the server 😕");
-              setLoading(false);
-            });
-        } else {
-          toast.error("Something wrong!");
-          setLoading(false);
-          router.push("/login");
-          localStorage.clear();
-        }
+    // validateUser()
+    //   .then((res) => {
+    //     if (!_.isEmpty(res)) {
+    checkServer()
+      .then(() => {
+        toast.success("Server Connected 😄!");
+        setLoading(false);
       })
       .catch((error) => {
-        toast.error("Something wrong!");
+        toast.error("It seems like there's an issue with the server 😕");
         setLoading(false);
-        router.push("/login");
-        localStorage.clear();
       });
+    //   } else {
+    //     toast.error("Something wrong!");
+    //     setLoading(false);
+    //     router.push("/login");
+    //     localStorage.clear();
+    //   }
+    // })
+    // .catch((error) => {
+    //   toast.error("Something wrong!");
+    //   setLoading(false);
+    //   router.push("/login");
+    //   localStorage.clear();
+    // });
   }, []);
   const sendMessage = () => {
     setText('')
@@ -120,7 +121,10 @@ const Page = () => {
                   <LuSubtitles style={{ fontSize: "20px" }} />
                 </span>
               </Link>
-              <Link href="/setting" className="nav_link">
+              <a href="/feedback" className="nav_link">
+                <span style={{ color: "white" }}><MdOutlineFeedback style={{ fontSize: "20px" }} /></span>
+              </a>
+              {/* <Link href="/setting" className="nav_link">
                 <span style={{ color: "white" }}>
                   <LuSettings2 style={{ fontSize: "20px" }} />
                 </span>
@@ -135,7 +139,7 @@ const Page = () => {
                 <span style={{ color: "white" }}>
                   <RxExit style={{ fontSize: "20px" }} />
                 </span>
-              </Link>
+              </Link> */}
             </div>
           </div>
           {/* <a className="nav_link" onClick={() => {
